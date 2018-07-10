@@ -10,15 +10,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 @Component
 public class JwtTokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-    @Value("${app.jwtSecret}")
+    @Value($_APP_JWT_SECRET)
     private String jwtSecret;
 
-    @Value("${app.jwtExpirationInMs}")
+    @Value($_APP_JWT_EXPIRATION_IN_MS)
     private int jwtExpirationInMs;
 
     public String generateToken(Authentication authentication) {
@@ -50,15 +52,15 @@ public class JwtTokenProvider {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
-            logger.error("Invalid JWT signature");
+            logger.error(INVALID_JWT_SIGNATURE);
         } catch (MalformedJwtException ex) {
-            logger.error("Invalid JWT token");
+            logger.error(INVALID_JWT_TOKEN);
         } catch (ExpiredJwtException ex) {
-            logger.error("Expired JWT token");
+            logger.error(EXPIRED_JWT_TOKEN);
         } catch (UnsupportedJwtException ex) {
-            logger.error("Unsupported JWT token");
+            logger.error(UNSUPPORTED_JWT_TOKEN);
         } catch (IllegalArgumentException ex) {
-            logger.error("JWT claims string is empty.");
+            logger.error(JWT_CLAIMS_STRING_IS_EMPTY);
         }
         return false;
     }

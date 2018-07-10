@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -23,8 +25,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         // Let people login with either username or email
         User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail)
-        );
+                        new UsernameNotFoundException(USER_NOT_FOUND_WITH_USERNAME_OR_EMAIL_MESSAGE + usernameOrEmail)
+                );
 
         return UserPrincipal.create(user);
     }
@@ -32,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("User", "id", id)
+                () -> new ResourceNotFoundException(USER, ID, id)
         );
 
         return UserPrincipal.create(user);

@@ -39,9 +39,23 @@ public interface AppConstants {
     String EMAIL_ADDRESS_ALREADY_IN_USE_MESSAGE = "Email Address already in use!";
     String USERNAME_IS_ALREADY_TAKEN_MESSAGE = "Username is already taken!";
     String USER_ROLE_NOT_SET_MESSAGE = "User Role not set.";
+    String RESPONDING_WITH_UNAUTHORIZED_ERROR_MESSAGE = "Responding with unauthorized error. Message - {}";
+    String SORRY_YOU_RE_NOT_AUTHORIZED_TO_ACCESS_THIS_RESOURCE_MESSAGE = "Sorry, You're not authorized to access this resource.";
+    String COULD_NOT_SET_USER_AUTHENTICATION_IN_SECURITY_CONTEXT_MESSAGE = "Could not set user authentication in security context";
+    String AUTHORIZATION = "Authorization";
+    String BEARER_ = "Bearer ";
 
     //    PreAuthorize params
     String HAS_ROLE_USER = "hasRole('USER')";
+
+    //    JWT
+    String $_APP_JWT_SECRET = "${app.jwtSecret}";
+    String $_APP_JWT_EXPIRATION_IN_MS = "${app.jwtExpirationInMs}";
+    String INVALID_JWT_SIGNATURE = "Invalid JWT signature";
+    String INVALID_JWT_TOKEN = "Invalid JWT token";
+    String EXPIRED_JWT_TOKEN = "Expired JWT token";
+    String UNSUPPORTED_JWT_TOKEN = "Unsupported JWT token";
+    String JWT_CLAIMS_STRING_IS_EMPTY = "JWT claims string is empty.";
 
     //    CONSTANTS
     int DAYS_MAX_VALUE = 7;
@@ -59,6 +73,8 @@ public interface AppConstants {
     String USERS = "users";
     String ROLES = "roles";
     int NAME_MAX_VALUE = 40;
+    int NAME_MIN_VALUE = 4;
+    int USER_NAME_MIN_VALUE = 3;
     int USER_NAME_MAX_VALUE = 15;
     int EMAIL_MAX_VALUE = 40;
     int PASSWORD_MAX_VALUE = 100;
@@ -67,4 +83,12 @@ public interface AppConstants {
     String ROLE_ID = "role_id";
     String VOTES = "votes";
     String CHOICE_ID = "choice_id";
+    String USER_NOT_FOUND_WITH_USERNAME_OR_EMAIL_MESSAGE = "User not found with username or email : ";
+    String ID = "id";
+    String SORRY_THIS_POLL_HAS_ALREADY_EXPIRED_MESSAGE = "Sorry! This Poll has already expired";
+    String CHOICE = "Choice";
+    String USER_HAS_ALREADY_VOTED_IN_POLL_MESSAGE = "User {} has already voted in Poll {}";
+    String SORRY_YOU_HAVE_ALREADY_CAST_YOUR_VOTE_IN_THIS_POLL_MESSAGE = "Sorry! You have already cast your vote in this poll";
+    String PAGE_NUMBER_CANNOT_BE_LESS_THAN_ZERO_MESSAGE = "Page number cannot be less than zero.";
+    String PAGE_SIZE_MUST_NOT_BE_GREATER_THAN_MESSAGE = "Page size must not be greater than ";
 }

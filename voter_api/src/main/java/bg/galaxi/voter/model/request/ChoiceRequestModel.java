@@ -3,9 +3,11 @@ package bg.galaxi.voter.model.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import static bg.galaxi.voter.util.AppConstants.TEXT_MAX_VALUE;
+
 public class ChoiceRequestModel {
     @NotBlank
-    @Size(max = 40)
+    @Size(max = TEXT_MAX_VALUE)
     private String text;
 
     public String getText() {

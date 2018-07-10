@@ -8,13 +8,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 public class PollRequestModel {
     @NotBlank
-    @Size(max = 140)
+    @Size(max = QUESTION_MAX_VALUE)
     private String question;
 
     @NotNull
-    @Size(min = 2, max = 6)
+    @Size(min = CHOISES_MIN_VALUE, max = CHOISES_MAX_VALUE)
     @Valid
     private List<ChoiceRequestModel> choices;
 

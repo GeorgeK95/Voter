@@ -4,22 +4,27 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 public class SignUpRequestModel {
+    private static final int PASSWORD_MAX_VALUE = 20;
+    private static final int PASSWORD_MIN_VALUE = 6;
+
     @NotBlank
-    @Size(min = 4, max = 40)
+    @Size(min = NAME_MIN_VALUE, max = NAME_MAX_VALUE)
     private String name;
 
     @NotBlank
-    @Size(min = 3, max = 15)
+    @Size(min = USER_NAME_MIN_VALUE, max = USER_NAME_MAX_VALUE)
     private String username;
 
     @NotBlank
-    @Size(max = 40)
+    @Size(max = EMAIL_MAX_VALUE)
     @Email
     private String email;
 
     @NotBlank
-    @Size(min = 6, max = 20)
+    @Size(min = PASSWORD_MIN_VALUE, max = PASSWORD_MAX_VALUE)
     private String password;
 
     public String getName() {

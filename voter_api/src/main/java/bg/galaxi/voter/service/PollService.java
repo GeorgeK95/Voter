@@ -35,6 +35,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 @Service
 public class PollService {
 
@@ -52,7 +54,7 @@ public class PollService {
     public PagedResponseModel<PollResponseModel> getAllPolls(UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
         Page<Poll> polls = pollRepository.findAll(pageable);
 
         if(polls.getNumberOfElements() == 0) {
@@ -78,9 +80,9 @@ public class PollService {
         validatePageNumberAndSize(page, size);
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+                .orElseThrow(() -> new ResourceNotFoundException(USER, USERNAME, username));
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
         Page<Poll> polls = pollRepository.findByCreatedBy(user.getId(), pageable);
 
         if (polls.getNumberOfElements() == 0) {
@@ -105,9 +107,9 @@ public class PollService {
         validatePageNumberAndSize(page, size);
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+                .orElseThrow(() -> new ResourceNotFoundException(USER, USERNAME, username));
 
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
         Page<Long> userVotedPollIds = voteRepository.findVotedPollIdsByUserId(user.getId(), pageable);
 
         if (userVotedPollIds.getNumberOfElements() == 0) {
@@ -118,7 +120,7 @@ public class PollService {
 
         List<Long> pollIds = userVotedPollIds.getContent();
 
-        Sort sort = new Sort(Sort.Direction.DESC, "createdAt");
+        Sort sort = new Sort(Sort.Direction.DESC, CREATED_AT);
         List<Poll> polls = pollRepository.findByIdIn(pollIds, sort);
 
         Map<Long, Long> choiceVoteCountMap = getChoiceVoteCountMap(pollIds);
@@ -153,7 +155,7 @@ public class PollService {
 
     public PollResponseModel getPollById(Long pollId, UserPrincipal currentUser) {
         Poll poll = pollRepository.findById(pollId).orElseThrow(
-                () -> new ResourceNotFoundException("Poll", "id", pollId));
+                () -> new ResourceNotFoundException(POLL, ID, pollId));
 
         List<ChoiceVoteCountDto> votes = voteRepository.countByPollIdGroupByChoiceId(pollId);
 
@@ -161,7 +163,7 @@ public class PollService {
                 .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));
 
         User creator = userRepository.findById(poll.getCreatedBy())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", poll.getCreatedBy()));
+                .orElseThrow(() -> new ResourceNotFoundException(USER, ID, poll.getCreatedBy()));
 
         Vote userVote = null;
         if(currentUser != null) {
@@ -174,10 +176,10 @@ public class PollService {
 
     public PollResponseModel castVoteAndGetUpdatedPoll(Long pollId, VoteRequestModel voteRequestModel, UserPrincipal currentUser) {
         Poll poll = pollRepository.findById(pollId)
-                .orElseThrow(() -> new ResourceNotFoundException("Poll", "id", pollId));
+                .orElseThrow(() -> new ResourceNotFoundException(POLL, ID, pollId));
 
         if(poll.getExpirationDateTime().isBefore(Instant.now())) {
-            throw new BadRequestException("Sorry! This Poll has already expired");
+            throw new BadRequestException(SORRY_THIS_POLL_HAS_ALREADY_EXPIRED_MESSAGE);
         }
 
         User user = userRepository.getOne(currentUser.getId());
@@ -185,7 +187,7 @@ public class PollService {
         Choice selectedChoice = poll.getChoices().stream()
                 .filter(choice -> choice.getId().equals(voteRequestModel.getChoiceId()))
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Choice", "id", voteRequestModel.getChoiceId()));
+                .orElseThrow(() -> new ResourceNotFoundException(CHOICE, ID, voteRequestModel.getChoiceId()));
 
         Vote vote = new Vote();
         vote.setPoll(poll);
@@ -195,8 +197,8 @@ public class PollService {
         try {
             vote = voteRepository.save(vote);
         } catch (DataIntegrityViolationException ex) {
-            logger.info("User {} has already voted in Poll {}", currentUser.getId(), pollId);
-            throw new BadRequestException("Sorry! You have already cast your vote in this poll");
+            logger.info(USER_HAS_ALREADY_VOTED_IN_POLL_MESSAGE, currentUser.getId(), pollId);
+            throw new BadRequestException(SORRY_YOU_HAVE_ALREADY_CAST_YOUR_VOTE_IN_THIS_POLL_MESSAGE);
         }
 
         List<ChoiceVoteCountDto> votes = voteRepository.countByPollIdGroupByChoiceId(pollId);
@@ -205,7 +207,7 @@ public class PollService {
                 .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));
 
         User creator = userRepository.findById(poll.getCreatedBy())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", poll.getCreatedBy()));
+                .orElseThrow(() -> new ResourceNotFoundException(USER, ID, poll.getCreatedBy()));
 
         return ModelMapper.mapPollToPollResponse(poll, choiceVotesMap, creator, vote.getChoice().getId());
     }
@@ -213,11 +215,11 @@ public class PollService {
 
     private void validatePageNumberAndSize(int page, int size) {
         if(page < 0) {
-            throw new BadRequestException("Page number cannot be less than zero.");
+            throw new BadRequestException(PAGE_NUMBER_CANNOT_BE_LESS_THAN_ZERO_MESSAGE);
         }
 
         if(size > AppConstants.MAX_PAGE_SIZE) {
-            throw new BadRequestException("Page size must not be greater than " + AppConstants.MAX_PAGE_SIZE);
+            throw new BadRequestException(PAGE_SIZE_MUST_NOT_BE_GREATER_THAN_MESSAGE + AppConstants.MAX_PAGE_SIZE);
         }
     }
 
