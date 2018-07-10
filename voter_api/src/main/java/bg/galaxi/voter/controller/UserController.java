@@ -7,6 +7,7 @@ import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.repository.UserRepository;
 import bg.galaxi.voter.security.CurrentUser;
 import bg.galaxi.voter.security.UserPrincipal;
+import bg.galaxi.voter.service.PollService;
 import bg.galaxi.voter.util.AppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

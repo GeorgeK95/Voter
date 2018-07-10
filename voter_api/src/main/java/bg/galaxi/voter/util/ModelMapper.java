@@ -1,10 +1,10 @@
 package bg.galaxi.voter.util;
 
-import com.example.polls.model.Poll;
-import com.example.polls.model.User;
-import com.example.polls.payload.ChoiceResponse;
-import com.example.polls.payload.PollResponse;
-import com.example.polls.payload.UserSummary;
+import bg.galaxi.voter.model.Poll;
+import bg.galaxi.voter.model.User;
+import bg.galaxi.voter.payload.ChoiceResponse;
+import bg.galaxi.voter.payload.PollResponse;
+import bg.galaxi.voter.payload.UserSummary;
 
 import java.time.Instant;
 import java.util.List;

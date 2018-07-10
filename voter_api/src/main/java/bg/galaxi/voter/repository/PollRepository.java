@@ -1,6 +1,6 @@
 package bg.galaxi.voter.repository;
 
-import org.apache.tomcat.jni.Poll;
+import bg.galaxi.voter.model.Poll;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
