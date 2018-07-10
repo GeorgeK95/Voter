@@ -24,8 +24,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 @RestController
-@RequestMapping("/api/polls")
+@RequestMapping(API_POLLS_URL)
 public class PollController {
 
     @Autowired
@@ -44,33 +46,33 @@ public class PollController {
 
     @GetMapping
     public PagedResponseModel<PollResponseModel> getPolls(@CurrentUser UserPrincipal currentUser,
-                                                          @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                          @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+                                                          @RequestParam(value = PAGE, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                          @RequestParam(value = SIZE, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return pollService.getAllPolls(currentUser, page, size);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize(HAS_ROLE_USER)
     public ResponseEntity<?> createPoll(@Valid @RequestBody PollRequestModel pollRequestModel) {
         Poll poll = pollService.createPoll(pollRequestModel);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{pollId}")
+                .fromCurrentRequest().path(POLL_ID_URL)
                 .buildAndExpand(poll.getId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new ApiResponseModel(true, "Poll Created Successfully"));
+                .body(new ApiResponseModel(true, POLL_CREATED_SUCCESSFULLY_MESSAGE));
     }
 
 
-    @GetMapping("/{pollId}")
+    @GetMapping(POLL_ID_URL)
     public PollResponseModel getPollById(@CurrentUser UserPrincipal currentUser,
                                          @PathVariable Long pollId) {
         return pollService.getPollById(pollId, currentUser);
     }
 
-    @PostMapping("/{pollId}/votes")
-    @PreAuthorize("hasRole('USER')")
+    @PostMapping(POLL_ID_VOTES_URL)
+    @PreAuthorize(HAS_ROLE_USER)
     public PollResponseModel castVote(@CurrentUser UserPrincipal currentUser,
                                       @PathVariable Long pollId,
                                       @Valid @RequestBody VoteRequestModel voteRequestModel) {

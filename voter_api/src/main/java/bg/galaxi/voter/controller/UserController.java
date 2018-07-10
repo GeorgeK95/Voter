@@ -20,8 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping(API_URL)
 public class UserController {
 
     @Autowired
@@ -38,27 +40,27 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
+    @GetMapping(USER_ME_URL)
+    @PreAuthorize(HAS_ROLE_USER)
     public UserContentDto getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         return new UserContentDto(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
     }
 
-    @GetMapping("/user/checkUsernameAvailability")
-    public UserAvailabilityDto checkUsernameAvailability(@RequestParam(value = "username") String username) {
+    @GetMapping(USER_CHECK_USERNAME_AVAILABILITY_URL)
+    public UserAvailabilityDto checkUsernameAvailability(@RequestParam(value = USERNAME) String username) {
         return new UserAvailabilityDto(!userRepository.existsByUsername(username));
     }
 
-    @GetMapping("/user/checkEmailAvailability")
-    public UserAvailabilityDto checkEmailAvailability(@RequestParam(value = "email") String email) {
+    @GetMapping(USER_CHECK_EMAIL_AVAILABILITY_URL)
+    public UserAvailabilityDto checkEmailAvailability(@RequestParam(value = EMAIL) String email) {
         return new UserAvailabilityDto(!userRepository.existsByEmail(email));
 
     }
 
-    @GetMapping("/users/{username}")
-    public UserProfileDto getUserProfile(@PathVariable(value = "username") String username) {
+    @GetMapping(USERS_USERNAME_URL)
+    public UserProfileDto getUserProfile(@PathVariable(value = USERNAME) String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+                .orElseThrow(() -> new ResourceNotFoundException(USER, USERNAME, username));
 
         long pollCount = pollRepository.countByCreatedBy(user.getId());
         long voteCount = voteRepository.countByUserId(user.getId());
@@ -68,19 +70,19 @@ public class UserController {
         return userProfileDto;
     }
 
-    @GetMapping("/users/{username}/polls")
-    public PagedResponseModel<PollResponseModel> getPollsCreatedBy(@PathVariable(value = "username") String username,
+    @GetMapping(USERS_USERNAME_POLLS_URL)
+    public PagedResponseModel<PollResponseModel> getPollsCreatedBy(@PathVariable(value = USERNAME) String username,
                                                                    @CurrentUser UserPrincipal currentUser,
-                                                                   @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                                   @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+                                                                   @RequestParam(value = PAGE, defaultValue = DEFAULT_PAGE_NUMBER) int page,
+                                                                   @RequestParam(value = SIZE, defaultValue = DEFAULT_PAGE_SIZE) int size) {
         return pollService.getPollsCreatedBy(username, currentUser, page, size);
     }
 
-    @GetMapping("/users/{username}/votes")
-    public PagedResponseModel<PollResponseModel> getPollsVotedBy(@PathVariable(value = "username") String username,
+    @GetMapping(USERS_USERNAME_VOTES_URL)
+    public PagedResponseModel<PollResponseModel> getPollsVotedBy(@PathVariable(value = USERNAME) String username,
                                                                  @CurrentUser UserPrincipal currentUser,
-                                                                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+                                                                 @RequestParam(value = PAGE, defaultValue = DEFAULT_PAGE_NUMBER) int page,
+                                                                 @RequestParam(value = SIZE, defaultValue = DEFAULT_PAGE_SIZE) int size) {
         return pollService.getPollsVotedBy(username, currentUser, page, size);
     }
 

@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -28,9 +30,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] permitted = new String[]{
-
+    private static final String[] STATIC_URLS = new String[]{
+            "/",
+            "/favicon.ico",
+            "/**/*.png",
+            "/**/*.gif",
+            "/**/*.svg",
+            "/**/*.jpg",
+            "/**/*.html",
+            "/**/*.css",
+            "/**/*.js"
     };
+
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;
@@ -75,21 +86,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
+                .antMatchers(STATIC_URLS)
                 .permitAll()
-                .antMatchers("/api/auth/**")
+                .antMatchers(API_AUTH_ALL_URL)
                 .permitAll()
-                .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
+                .antMatchers(API_USER_CHECK_USERNAME_AVAILABILITY_URL, API_USER_CHECK_EMAIL_AVAILABILITY_URL)
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
+                .antMatchers(HttpMethod.GET, API_POLLS_ALL_URL, API_USERS_ALL_URL)
                 .permitAll()
                 .anyRequest()
                 .authenticated();

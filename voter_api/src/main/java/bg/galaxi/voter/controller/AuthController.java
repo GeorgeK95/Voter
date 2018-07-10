@@ -29,8 +29,10 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(API_AUTH_URL)
 public class AuthController {
 
     @Autowired
@@ -48,7 +50,7 @@ public class AuthController {
     @Autowired
     JwtTokenProvider tokenProvider;
 
-    @PostMapping("/signin")
+    @PostMapping(SIGNIN_URL)
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestModel loginRequestModel) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -64,15 +66,15 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponseModel(jwt));
     }
 
-    @PostMapping("/signup")
+    @PostMapping(SIGNUP_URL)
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequestModel signUpRequestModel) {
         if (userRepository.existsByUsername(signUpRequestModel.getUsername())) {
-            return new ResponseEntity(new ApiResponseModel(false, "Username is already taken!"),
+            return new ResponseEntity(new ApiResponseModel(false, USERNAME_IS_ALREADY_TAKEN_MESSAGE),
                     HttpStatus.BAD_REQUEST);
         }
 
         if (userRepository.existsByEmail(signUpRequestModel.getEmail())) {
-            return new ResponseEntity(new ApiResponseModel(false, "Email Address already in use!"),
+            return new ResponseEntity(new ApiResponseModel(false, EMAIL_ADDRESS_ALREADY_IN_USE_MESSAGE),
                     HttpStatus.BAD_REQUEST);
         }
 
@@ -83,16 +85,16 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new InternalServerErrorException("User Role not set."));
+                .orElseThrow(() -> new InternalServerErrorException(USER_ROLE_NOT_SET_MESSAGE));
 
         user.setRoles(Collections.singleton(userRole));
 
         User result = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/users/{username}")
+                .fromCurrentContextPath().path(USERS_USERNAME_URL)
                 .buildAndExpand(result.getUsername()).toUri();
 
-        return ResponseEntity.created(location).body(new ApiResponseModel(true, "User registered successfully"));
+        return ResponseEntity.created(location).body(new ApiResponseModel(true, USER_REGISTERED_SUCCESSFULLY_MESSAGE));
     }
 }
