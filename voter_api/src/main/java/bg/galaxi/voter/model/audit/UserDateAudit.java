@@ -6,9 +6,12 @@ import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.MappedSuperclass;
 
+import static bg.galaxi.voter.util.AppConstants.CREATED_AT;
+import static bg.galaxi.voter.util.AppConstants.UPDATED_AT;
+
 @MappedSuperclass
 @JsonIgnoreProperties(
-        value = {"createdBy", "updatedBy"},
+        value = {CREATED_AT, UPDATED_AT},
         allowGetters = true
 )
 public abstract class UserDateAudit extends DateAudit {

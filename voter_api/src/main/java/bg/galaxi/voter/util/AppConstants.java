@@ -9,6 +9,8 @@ public interface AppConstants {
     String USERNAME = "username";
     String USER = "User";
     String EMAIL = "email";
+    String CREATED_AT = "createdAt";
+    String UPDATED_AT = "updatedAt";
 
     //    URLS
     String API_AUTH_ALL_URL = "/api/auth/**";
@@ -40,4 +42,29 @@ public interface AppConstants {
 
     //    PreAuthorize params
     String HAS_ROLE_USER = "hasRole('USER')";
+
+    //    CONSTANTS
+    int DAYS_MAX_VALUE = 7;
+    int HOURS_MAX_VALUE = 23;
+    String CHOICES = "choices";
+    int TEXT_MAX_VALUE = 40;
+    String POLL_ID = "poll_id";
+    String POLLS = "polls";
+    String POLL = "poll";
+    int CHOISES_MIN_VALUE = 2;
+    int CHOISES_MAX_VALUE = 6;
+    int CHOISES_BATCH_SIZE = 30;
+    int QUESTION_MAX_VALUE = 140;
+    int ROLE_NAME_LENGH_VALUE = 60;
+    String USERS = "users";
+    String ROLES = "roles";
+    int NAME_MAX_VALUE = 40;
+    int USER_NAME_MAX_VALUE = 15;
+    int EMAIL_MAX_VALUE = 40;
+    int PASSWORD_MAX_VALUE = 100;
+    String USER_ROLES = "user_roles";
+    String USER_ID = "user_id";
+    String ROLE_ID = "role_id";
+    String VOTES = "votes";
+    String CHOICE_ID = "choice_id";
 }

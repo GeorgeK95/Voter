@@ -10,42 +10,46 @@ import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
+
 @Entity
-@Table(name = "users", uniqueConstraints = {
+@Table(name = USERS, uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-            "username"
+                USERNAME
         }),
         @UniqueConstraint(columnNames = {
-            "email"
+                EMAIL
         })
 })
 public class User extends DateAudit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Size(max = 40)
+    @Size(max = NAME_MAX_VALUE)
     private String name;
 
     @NotBlank
-    @Size(max = 15)
+    @Size(max = USER_NAME_MAX_VALUE)
     private String username;
 
     @NaturalId
     @NotBlank
-    @Size(max = 40)
+    @Size(max = EMAIL_MAX_VALUE)
     @Email
     private String email;
 
     @NotBlank
-    @Size(max = 100)
+    @Size(max = PASSWORD_MAX_VALUE)
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = USER_ROLES,
+            joinColumns = @JoinColumn(name = USER_ID),
+            inverseJoinColumns = @JoinColumn(name = ROLE_ID))
     private Set<Role> roles = new HashSet<>();
 
     public User() {

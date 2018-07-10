@@ -13,26 +13,29 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import static bg.galaxi.voter.util.AppConstants.*;
+
 @Entity
-@Table(name = "polls")
+@Table(name = POLLS)
 public class Poll extends UserDateAudit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Size(max = 140)
+    @Size(max = QUESTION_MAX_VALUE)
     private String question;
 
     @OneToMany(
-            mappedBy = "poll",
+            mappedBy = POLL,
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
-    @Size(min = 2, max = 6)
+    @Size(min = CHOISES_MIN_VALUE, max = CHOISES_MAX_VALUE)
     @Fetch(FetchMode.SELECT)
-    @BatchSize(size = 30)
+    @BatchSize(size = CHOISES_BATCH_SIZE)
     private List<Choice> choices = new ArrayList<>();
 
     @NotNull

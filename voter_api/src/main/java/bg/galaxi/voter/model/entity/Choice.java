@@ -5,19 +5,24 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
+import static bg.galaxi.voter.util.AppConstants.CHOICES;
+import static bg.galaxi.voter.util.AppConstants.POLL_ID;
+import static bg.galaxi.voter.util.AppConstants.TEXT_MAX_VALUE;
+
 @Entity
-@Table(name = "choices")
+@Table(name = CHOICES)
 public class Choice {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Size(max = 40)
+    @Size(max = TEXT_MAX_VALUE)
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "poll_id", nullable = false)
+    @JoinColumn(name = POLL_ID, nullable = false)
     private Poll poll;
 
     public Choice() {

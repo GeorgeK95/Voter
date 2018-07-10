@@ -5,16 +5,20 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
+import static bg.galaxi.voter.util.AppConstants.ROLES;
+import static bg.galaxi.voter.util.AppConstants.ROLE_NAME_LENGH_VALUE;
+
 @Entity
-@Table(name = "roles")
+@Table(name = ROLES)
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @NaturalId
-    @Column(length = 60)
+    @Column(length = ROLE_NAME_LENGH_VALUE)
     private RoleName name;
 
     public Role() {
