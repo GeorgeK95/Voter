@@ -1,6 +1,6 @@
 package bg.galaxi.voter.model.request;
 
-import bg.galaxi.voter.model.dto.PollLengthDto;
+import bg.galaxi.voter.model.dto.PollLength;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -22,7 +22,7 @@ public class PollRequestModel {
 
     @NotNull
     @Valid
-    private PollLengthDto pollLengthDto;
+    private PollLength pollLength;
 
     public String getQuestion() {
         return question;
@@ -40,11 +40,11 @@ public class PollRequestModel {
         this.choices = choices;
     }
 
-    public PollLengthDto getPollLengthDto() {
-        return pollLengthDto;
+    public PollLength getPollLength() {
+        return pollLength;
     }
 
-    public void setPollLengthDto(PollLengthDto pollLengthDto) {
-        this.pollLengthDto = pollLengthDto;
+    public void setPollLength(PollLength pollLength) {
+        this.pollLength = pollLength;
     }
 }

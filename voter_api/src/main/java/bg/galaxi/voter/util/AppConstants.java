@@ -58,8 +58,8 @@ public interface AppConstants {
     String JWT_CLAIMS_STRING_IS_EMPTY = "JWT claims string is empty.";
 
     //    CONSTANTS
-    int DAYS_MAX_VALUE = 7;
-    int HOURS_MAX_VALUE = 23;
+    long DAYS_MAX_VALUE = 7;
+    long HOURS_MAX_VALUE = 23;
     String CHOICES = "choices";
     int TEXT_MAX_VALUE = 40;
     String POLL_ID = "poll_id";
@@ -91,4 +91,6 @@ public interface AppConstants {
     String SORRY_YOU_HAVE_ALREADY_CAST_YOUR_VOTE_IN_THIS_POLL_MESSAGE = "Sorry! You have already cast your vote in this poll";
     String PAGE_NUMBER_CANNOT_BE_LESS_THAN_ZERO_MESSAGE = "Page number cannot be less than zero.";
     String PAGE_SIZE_MUST_NOT_BE_GREATER_THAN_MESSAGE = "Page size must not be greater than ";
+    long DAYS_MIN_VALUE = 0;
+    long HOURS_MIN_VALUE = 0;
 }

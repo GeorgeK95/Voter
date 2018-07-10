@@ -1,18 +1,20 @@
 package bg.galaxi.voter.model.dto;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import static bg.galaxi.voter.util.AppConstants.DAYS_MAX_VALUE;
-import static bg.galaxi.voter.util.AppConstants.HOURS_MAX_VALUE;
+import static bg.galaxi.voter.util.AppConstants.*;
 
-public class PollLengthDto {
+public class PollLength {
 
     @NotNull
+    @Min(DAYS_MIN_VALUE)
     @Max(DAYS_MAX_VALUE)
     private Integer days;
 
     @NotNull
+    @Min(HOURS_MIN_VALUE)
     @Max(HOURS_MAX_VALUE)
     private Integer hours;
 
