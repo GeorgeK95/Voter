@@ -1,9 +1,9 @@
-package bg.galaxi.voter.payload;
+package bg.galaxi.voter.model.dto;
 
-public class UserIdentityAvailability {
+public class UserAvailability {
     private Boolean available;
 
-    public UserIdentityAvailability(Boolean available) {
+    public UserAvailability(Boolean available) {
         this.available = available;
     }
 

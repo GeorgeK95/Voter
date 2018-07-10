@@ -1,4 +1,4 @@
-package bg.galaxi.voter.model;
+package bg.galaxi.voter.model.enumeration;
 
 public enum  RoleName {
     ROLE_USER,

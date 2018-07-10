@@ -1,5 +1,6 @@
-package bg.galaxi.voter.security;
+package bg.galaxi.voter.security.jwt;
 
+import bg.galaxi.voter.security.user.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,6 @@
-package bg.galaxi.voter.payload;
+package bg.galaxi.voter.model.request;
+
+import bg.galaxi.voter.model.dto.PollLength;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;

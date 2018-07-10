@@ -1,4 +1,4 @@
-package bg.galaxi.voter.security;
+package bg.galaxi.voter.security.user;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

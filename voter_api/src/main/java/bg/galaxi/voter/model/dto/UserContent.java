@@ -1,11 +1,11 @@
-package bg.galaxi.voter.payload;
+package bg.galaxi.voter.model.dto;
 
-public class UserSummary {
+public class UserContent {
     private Long id;
     private String username;
     private String name;
 
-    public UserSummary(Long id, String username, String name) {
+    public UserContent(Long id, String username, String name) {
         this.id = id;
         this.username = username;
         this.name = name;

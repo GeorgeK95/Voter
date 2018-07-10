@@ -1,4 +1,4 @@
-package bg.galaxi.voter.payload;
+package bg.galaxi.voter.model.response;
 
 import java.util.List;
 

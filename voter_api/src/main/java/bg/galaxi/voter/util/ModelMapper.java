@@ -1,10 +1,10 @@
 package bg.galaxi.voter.util;
 
-import bg.galaxi.voter.model.Poll;
-import bg.galaxi.voter.model.User;
-import bg.galaxi.voter.payload.ChoiceResponse;
-import bg.galaxi.voter.payload.PollResponse;
-import bg.galaxi.voter.payload.UserSummary;
+import bg.galaxi.voter.model.entity.Poll;
+import bg.galaxi.voter.model.entity.User;
+import bg.galaxi.voter.model.response.ChoiceResponse;
+import bg.galaxi.voter.model.response.PollResponse;
+import bg.galaxi.voter.model.dto.UserContent;
 
 import java.time.Instant;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ModelMapper {
         }).collect(Collectors.toList());
 
         pollResponse.setChoices(choiceResponses);
-        UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getName());
+        UserContent creatorSummary = new UserContent(creator.getId(), creator.getUsername(), creator.getName());
         pollResponse.setCreatedBy(creatorSummary);
 
         if(userVote != null) {

@@ -1,4 +1,4 @@
-package bg.galaxi.voter.model;
+package bg.galaxi.voter.model.entity;
 
 import bg.galaxi.voter.model.audit.DateAudit;
 

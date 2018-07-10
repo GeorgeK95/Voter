@@ -1,4 +1,4 @@
-package bg.galaxi.voter.model;
+package bg.galaxi.voter.model.entity;
 
 import bg.galaxi.voter.model.audit.UserDateAudit;
 import org.hibernate.annotations.BatchSize;
@@ -9,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.awt.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;

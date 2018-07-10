@@ -1,4 +1,4 @@
-package bg.galaxi.voter.payload;
+package bg.galaxi.voter.model.response;
 
 public class ChoiceResponse {
     private long id;

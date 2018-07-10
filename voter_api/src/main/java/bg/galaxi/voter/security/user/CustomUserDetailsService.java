@@ -1,7 +1,7 @@
-package bg.galaxi.voter.security;
+package bg.galaxi.voter.security.user;
 
 import bg.galaxi.voter.exception.ResourceNotFoundException;
-import bg.galaxi.voter.model.User;
+import bg.galaxi.voter.model.entity.User;
 import bg.galaxi.voter.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

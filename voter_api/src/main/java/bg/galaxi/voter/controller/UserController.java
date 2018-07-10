@@ -1,13 +1,17 @@
 package bg.galaxi.voter.controller;
 
 import bg.galaxi.voter.exception.ResourceNotFoundException;
-import bg.galaxi.voter.model.User;
-import bg.galaxi.voter.payload.*;
+import bg.galaxi.voter.model.entity.User;
+import bg.galaxi.voter.model.dto.UserAvailability;
+import bg.galaxi.voter.model.dto.UserContent;
+import bg.galaxi.voter.model.dto.UserProfile;
+import bg.galaxi.voter.model.response.PagedResponse;
+import bg.galaxi.voter.model.response.PollResponse;
 import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.repository.UserRepository;
 import bg.galaxi.voter.repository.VoteRepository;
-import bg.galaxi.voter.security.CurrentUser;
-import bg.galaxi.voter.security.UserPrincipal;
+import bg.galaxi.voter.security.user.CurrentUser;
+import bg.galaxi.voter.security.user.UserPrincipal;
 import bg.galaxi.voter.service.PollService;
 import bg.galaxi.voter.util.AppConstants;
 import org.slf4j.Logger;
@@ -36,18 +40,18 @@ public class UserController {
 
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
-    public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
+    public UserContent getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+        return new UserContent(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
     }
 
     @GetMapping("/user/checkUsernameAvailability")
-    public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
-        return new UserIdentityAvailability(!userRepository.existsByUsername(username));
+    public UserAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
+        return new UserAvailability(!userRepository.existsByUsername(username));
     }
 
     @GetMapping("/user/checkEmailAvailability")
-    public UserIdentityAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
-        return new UserIdentityAvailability(!userRepository.existsByEmail(email));
+    public UserAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
+        return new UserAvailability(!userRepository.existsByEmail(email));
 
     }
 

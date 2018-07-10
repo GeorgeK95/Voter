@@ -1,6 +1,6 @@
-package bg.galaxi.voter.security;
+package bg.galaxi.voter.security.user;
 
-import bg.galaxi.voter.model.User;
+import bg.galaxi.voter.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,6 +1,6 @@
 package bg.galaxi.voter.config;
 
-import bg.galaxi.voter.security.UserPrincipal;
+import bg.galaxi.voter.security.user.UserPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

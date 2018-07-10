@@ -1,6 +1,6 @@
 package bg.galaxi.voter.repository;
 
-import bg.galaxi.voter.model.User;
+import bg.galaxi.voter.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

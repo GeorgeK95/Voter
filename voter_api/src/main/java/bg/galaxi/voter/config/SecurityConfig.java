@@ -1,8 +1,8 @@
 package bg.galaxi.voter.config;
 
-import bg.galaxi.voter.security.CustomUserDetailsService;
-import bg.galaxi.voter.security.JwtAuthenticationEntryPoint;
-import bg.galaxi.voter.security.JwtAuthenticationFilter;
+import bg.galaxi.voter.security.user.CustomUserDetailsService;
+import bg.galaxi.voter.security.jwt.JwtAuthenticationEntryPoint;
+import bg.galaxi.voter.security.jwt.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

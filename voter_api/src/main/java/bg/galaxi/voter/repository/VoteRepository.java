@@ -1,7 +1,7 @@
 package bg.galaxi.voter.repository;
 
-import bg.galaxi.voter.model.ChoiceVoteCount;
-import bg.galaxi.voter.model.Vote;
+import bg.galaxi.voter.model.dto.ChoiceVoteCount;
+import bg.galaxi.voter.model.entity.Vote;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

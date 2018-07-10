@@ -1,4 +1,4 @@
-package bg.galaxi.voter.model;
+package bg.galaxi.voter.model.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package bg.galaxi.voter.repository;
 
-import bg.galaxi.voter.model.Role;
-import bg.galaxi.voter.model.RoleName;
+import bg.galaxi.voter.model.entity.Role;
+import bg.galaxi.voter.model.enumeration.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

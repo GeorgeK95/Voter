@@ -1,5 +1,6 @@
-package bg.galaxi.voter.model;
+package bg.galaxi.voter.model.entity;
 
+import bg.galaxi.voter.model.enumeration.RoleName;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;

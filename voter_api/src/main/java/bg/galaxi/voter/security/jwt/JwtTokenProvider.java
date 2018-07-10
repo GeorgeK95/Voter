@@ -1,5 +1,6 @@
-package bg.galaxi.voter.security;
+package bg.galaxi.voter.security.jwt;
 
+import bg.galaxi.voter.security.user.UserPrincipal;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

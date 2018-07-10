@@ -1,5 +1,6 @@
-package bg.galaxi.voter.payload;
+package bg.galaxi.voter.model.response;
 
+import bg.galaxi.voter.model.dto.UserContent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.Instant;
@@ -9,7 +10,7 @@ public class PollResponse {
     private Long id;
     private String question;
     private List<ChoiceResponse> choices;
-    private UserSummary createdBy;
+    private UserContent createdBy;
     private Instant creationDateTime;
     private Instant expirationDateTime;
     private Boolean isExpired;
@@ -42,11 +43,11 @@ public class PollResponse {
         this.choices = choices;
     }
 
-    public UserSummary getCreatedBy() {
+    public UserContent getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(UserSummary createdBy) {
+    public void setCreatedBy(UserContent createdBy) {
         this.createdBy = createdBy;
     }
 

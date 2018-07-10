@@ -1,4 +1,4 @@
-package bg.galaxi.voter.model;
+package bg.galaxi.voter.model.dto;
 
 public class ChoiceVoteCount {
     private Long choiceId;

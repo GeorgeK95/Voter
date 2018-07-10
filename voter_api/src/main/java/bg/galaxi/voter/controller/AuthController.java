@@ -1,16 +1,16 @@
 package bg.galaxi.voter.controller;
 
 import bg.galaxi.voter.exception.InternalServerErrorException;
-import bg.galaxi.voter.model.Role;
-import bg.galaxi.voter.model.RoleName;
-import bg.galaxi.voter.model.User;
-import bg.galaxi.voter.payload.ApiResponse;
-import bg.galaxi.voter.payload.JwtAuthenticationResponse;
-import bg.galaxi.voter.payload.LoginRequest;
-import bg.galaxi.voter.payload.SignUpRequest;
+import bg.galaxi.voter.model.entity.Role;
+import bg.galaxi.voter.model.enumeration.RoleName;
+import bg.galaxi.voter.model.entity.User;
+import bg.galaxi.voter.model.response.ApiResponse;
+import bg.galaxi.voter.model.response.JwtAuthenticationResponse;
+import bg.galaxi.voter.model.request.LoginRequest;
+import bg.galaxi.voter.model.request.SignUpRequest;
 import bg.galaxi.voter.repository.RoleRepository;
 import bg.galaxi.voter.repository.UserRepository;
-import bg.galaxi.voter.security.JwtTokenProvider;
+import bg.galaxi.voter.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

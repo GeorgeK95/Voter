@@ -1,12 +1,16 @@
 package bg.galaxi.voter.controller;
 
-import bg.galaxi.voter.model.Poll;
-import bg.galaxi.voter.payload.*;
+import bg.galaxi.voter.model.entity.Poll;
+import bg.galaxi.voter.model.request.PollRequest;
+import bg.galaxi.voter.model.request.VoteRequest;
+import bg.galaxi.voter.model.response.ApiResponse;
+import bg.galaxi.voter.model.response.PagedResponse;
+import bg.galaxi.voter.model.response.PollResponse;
 import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.repository.UserRepository;
 import bg.galaxi.voter.repository.VoteRepository;
-import bg.galaxi.voter.security.CurrentUser;
-import bg.galaxi.voter.security.UserPrincipal;
+import bg.galaxi.voter.security.user.CurrentUser;
+import bg.galaxi.voter.security.user.UserPrincipal;
 import bg.galaxi.voter.service.PollService;
 import bg.galaxi.voter.util.AppConstants;
 import org.slf4j.Logger;

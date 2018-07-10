@@ -1,4 +1,4 @@
-package bg.galaxi.voter.payload;
+package bg.galaxi.voter.model.request;
 import javax.validation.constraints.NotNull;
 
 public class VoteRequest {

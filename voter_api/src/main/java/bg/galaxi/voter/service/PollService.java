@@ -2,16 +2,19 @@ package bg.galaxi.voter.service;
 
 import bg.galaxi.voter.exception.BadRequestException;
 import bg.galaxi.voter.exception.ResourceNotFoundException;
-import bg.galaxi.voter.model.*;
-import bg.galaxi.voter.model.Choice;
-import bg.galaxi.voter.payload.PagedResponse;
-import bg.galaxi.voter.payload.PollRequest;
-import bg.galaxi.voter.payload.PollResponse;
-import bg.galaxi.voter.payload.VoteRequest;
+import bg.galaxi.voter.model.entity.Choice;
+import bg.galaxi.voter.model.dto.ChoiceVoteCount;
+import bg.galaxi.voter.model.entity.Poll;
+import bg.galaxi.voter.model.entity.User;
+import bg.galaxi.voter.model.entity.Vote;
+import bg.galaxi.voter.model.response.PagedResponse;
+import bg.galaxi.voter.model.request.PollRequest;
+import bg.galaxi.voter.model.response.PollResponse;
+import bg.galaxi.voter.model.request.VoteRequest;
 import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.repository.UserRepository;
 import bg.galaxi.voter.repository.VoteRepository;
-import bg.galaxi.voter.security.UserPrincipal;
+import bg.galaxi.voter.security.user.UserPrincipal;
 import bg.galaxi.voter.util.AppConstants;
 import bg.galaxi.voter.util.ModelMapper;
 import org.slf4j.Logger;
@@ -24,7 +27,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -137,7 +139,7 @@ public class PollService {
         poll.setQuestion(pollRequest.getQuestion());
 
         pollRequest.getChoices().forEach(choiceRequest -> {
-            poll.addChoice(new bg.galaxi.voter.model.Choice(choiceRequest.getText()));
+            poll.addChoice(new Choice(choiceRequest.getText()));
         });
 
         Instant now = Instant.now();
