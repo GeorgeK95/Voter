@@ -1,7 +1,7 @@
 package bg.galaxi.voter.model.request;
 import javax.validation.constraints.NotNull;
 
-public class VoteRequest {
+public class VoteRequestModel {
     @NotNull
     private Long choiceId;
 

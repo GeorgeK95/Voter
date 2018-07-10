@@ -3,7 +3,7 @@ package bg.galaxi.voter.model.dto;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
-public class PollLength {
+public class PollLengthDto {
     @NotNull
     @Max(7)
     private Integer days;

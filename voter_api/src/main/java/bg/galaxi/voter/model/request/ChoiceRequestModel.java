@@ -3,7 +3,7 @@ package bg.galaxi.voter.model.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class ChoiceRequest {
+public class ChoiceRequestModel {
     @NotBlank
     @Size(max = 40)
     private String text;

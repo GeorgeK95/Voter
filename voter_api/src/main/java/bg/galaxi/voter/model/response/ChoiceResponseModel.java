@@ -1,6 +1,6 @@
 package bg.galaxi.voter.model.response;
 
-public class ChoiceResponse {
+public class ChoiceResponseModel {
     private long id;
     private String text;
     private long voteCount;

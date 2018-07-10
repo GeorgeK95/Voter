@@ -1,11 +1,11 @@
 package bg.galaxi.voter.controller;
 
 import bg.galaxi.voter.model.entity.Poll;
-import bg.galaxi.voter.model.request.PollRequest;
-import bg.galaxi.voter.model.request.VoteRequest;
-import bg.galaxi.voter.model.response.ApiResponse;
-import bg.galaxi.voter.model.response.PagedResponse;
-import bg.galaxi.voter.model.response.PollResponse;
+import bg.galaxi.voter.model.request.PollRequestModel;
+import bg.galaxi.voter.model.request.VoteRequestModel;
+import bg.galaxi.voter.model.response.ApiResponseModel;
+import bg.galaxi.voter.model.response.PagedResponseModel;
+import bg.galaxi.voter.model.response.PollResponseModel;
 import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.repository.UserRepository;
 import bg.galaxi.voter.repository.VoteRepository;
@@ -43,38 +43,38 @@ public class PollController {
     private static final Logger logger = LoggerFactory.getLogger(PollController.class);
 
     @GetMapping
-    public PagedResponse<PollResponse> getPolls(@CurrentUser UserPrincipal currentUser,
-                                                @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+    public PagedResponseModel<PollResponseModel> getPolls(@CurrentUser UserPrincipal currentUser,
+                                                          @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                          @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return pollService.getAllPolls(currentUser, page, size);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createPoll(@Valid @RequestBody PollRequest pollRequest) {
-        Poll poll = pollService.createPoll(pollRequest);
+    public ResponseEntity<?> createPoll(@Valid @RequestBody PollRequestModel pollRequestModel) {
+        Poll poll = pollService.createPoll(pollRequestModel);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{pollId}")
                 .buildAndExpand(poll.getId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Poll Created Successfully"));
+                .body(new ApiResponseModel(true, "Poll Created Successfully"));
     }
 
 
     @GetMapping("/{pollId}")
-    public PollResponse getPollById(@CurrentUser UserPrincipal currentUser,
-                                    @PathVariable Long pollId) {
+    public PollResponseModel getPollById(@CurrentUser UserPrincipal currentUser,
+                                         @PathVariable Long pollId) {
         return pollService.getPollById(pollId, currentUser);
     }
 
     @PostMapping("/{pollId}/votes")
     @PreAuthorize("hasRole('USER')")
-    public PollResponse castVote(@CurrentUser UserPrincipal currentUser,
-                         @PathVariable Long pollId,
-                         @Valid @RequestBody VoteRequest voteRequest) {
-        return pollService.castVoteAndGetUpdatedPoll(pollId, voteRequest, currentUser);
+    public PollResponseModel castVote(@CurrentUser UserPrincipal currentUser,
+                                      @PathVariable Long pollId,
+                                      @Valid @RequestBody VoteRequestModel voteRequestModel) {
+        return pollService.castVoteAndGetUpdatedPoll(pollId, voteRequestModel, currentUser);
     }
 
 }

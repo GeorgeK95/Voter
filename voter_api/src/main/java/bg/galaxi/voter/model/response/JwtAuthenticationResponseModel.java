@@ -1,10 +1,10 @@
 package bg.galaxi.voter.model.response;
 
-public class JwtAuthenticationResponse {
+public class JwtAuthenticationResponseModel {
     private String accessToken;
     private String tokenType = "Bearer";
 
-    public JwtAuthenticationResponse(String accessToken) {
+    public JwtAuthenticationResponseModel(String accessToken) {
         this.accessToken = accessToken;
     }
 

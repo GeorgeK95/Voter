@@ -2,11 +2,11 @@ package bg.galaxi.voter.controller;
 
 import bg.galaxi.voter.exception.ResourceNotFoundException;
 import bg.galaxi.voter.model.entity.User;
-import bg.galaxi.voter.model.dto.UserAvailability;
-import bg.galaxi.voter.model.dto.UserContent;
-import bg.galaxi.voter.model.dto.UserProfile;
-import bg.galaxi.voter.model.response.PagedResponse;
-import bg.galaxi.voter.model.response.PollResponse;
+import bg.galaxi.voter.model.dto.UserAvailabilityDto;
+import bg.galaxi.voter.model.dto.UserContentDto;
+import bg.galaxi.voter.model.dto.UserProfileDto;
+import bg.galaxi.voter.model.response.PagedResponseModel;
+import bg.galaxi.voter.model.response.PollResponseModel;
 import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.repository.UserRepository;
 import bg.galaxi.voter.repository.VoteRepository;
@@ -40,47 +40,47 @@ public class UserController {
 
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
-    public UserContent getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        return new UserContent(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
+    public UserContentDto getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+        return new UserContentDto(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
     }
 
     @GetMapping("/user/checkUsernameAvailability")
-    public UserAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
-        return new UserAvailability(!userRepository.existsByUsername(username));
+    public UserAvailabilityDto checkUsernameAvailability(@RequestParam(value = "username") String username) {
+        return new UserAvailabilityDto(!userRepository.existsByUsername(username));
     }
 
     @GetMapping("/user/checkEmailAvailability")
-    public UserAvailability checkEmailAvailability(@RequestParam(value = "email") String email) {
-        return new UserAvailability(!userRepository.existsByEmail(email));
+    public UserAvailabilityDto checkEmailAvailability(@RequestParam(value = "email") String email) {
+        return new UserAvailabilityDto(!userRepository.existsByEmail(email));
 
     }
 
     @GetMapping("/users/{username}")
-    public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
+    public UserProfileDto getUserProfile(@PathVariable(value = "username") String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
         long pollCount = pollRepository.countByCreatedBy(user.getId());
         long voteCount = voteRepository.countByUserId(user.getId());
 
-        UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount);
+        UserProfileDto userProfileDto = new UserProfileDto(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount);
 
-        return userProfile;
+        return userProfileDto;
     }
 
     @GetMapping("/users/{username}/polls")
-    public PagedResponse<PollResponse> getPollsCreatedBy(@PathVariable(value = "username") String username,
-                                                         @CurrentUser UserPrincipal currentUser,
-                                                         @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                         @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+    public PagedResponseModel<PollResponseModel> getPollsCreatedBy(@PathVariable(value = "username") String username,
+                                                                   @CurrentUser UserPrincipal currentUser,
+                                                                   @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                                   @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return pollService.getPollsCreatedBy(username, currentUser, page, size);
     }
 
     @GetMapping("/users/{username}/votes")
-    public PagedResponse<PollResponse> getPollsVotedBy(@PathVariable(value = "username") String username,
-                                                       @CurrentUser UserPrincipal currentUser,
-                                                       @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                       @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+    public PagedResponseModel<PollResponseModel> getPollsVotedBy(@PathVariable(value = "username") String username,
+                                                                 @CurrentUser UserPrincipal currentUser,
+                                                                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return pollService.getPollsVotedBy(username, currentUser, page, size);
     }
 

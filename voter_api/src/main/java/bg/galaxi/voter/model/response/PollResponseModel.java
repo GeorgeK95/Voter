@@ -1,16 +1,16 @@
 package bg.galaxi.voter.model.response;
 
-import bg.galaxi.voter.model.dto.UserContent;
+import bg.galaxi.voter.model.dto.UserContentDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.Instant;
 import java.util.List;
 
-public class PollResponse {
+public class PollResponseModel {
     private Long id;
     private String question;
-    private List<ChoiceResponse> choices;
-    private UserContent createdBy;
+    private List<ChoiceResponseModel> choices;
+    private UserContentDto createdBy;
     private Instant creationDateTime;
     private Instant expirationDateTime;
     private Boolean isExpired;
@@ -35,19 +35,19 @@ public class PollResponse {
         this.question = question;
     }
 
-    public List<ChoiceResponse> getChoices() {
+    public List<ChoiceResponseModel> getChoices() {
         return choices;
     }
 
-    public void setChoices(List<ChoiceResponse> choices) {
+    public void setChoices(List<ChoiceResponseModel> choices) {
         this.choices = choices;
     }
 
-    public UserContent getCreatedBy() {
+    public UserContentDto getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(UserContent createdBy) {
+    public void setCreatedBy(UserContentDto createdBy) {
         this.createdBy = createdBy;
     }
 

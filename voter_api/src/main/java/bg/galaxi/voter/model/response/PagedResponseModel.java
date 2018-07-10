@@ -2,7 +2,7 @@ package bg.galaxi.voter.model.response;
 
 import java.util.List;
 
-public class PagedResponse<T> {
+public class PagedResponseModel<T> {
 
     private List<T> content;
     private int page;
@@ -11,11 +11,11 @@ public class PagedResponse<T> {
     private int totalPages;
     private boolean last;
 
-    public PagedResponse() {
+    public PagedResponseModel() {
 
     }
 
-    public PagedResponse(List<T> content, int page, int size, long totalElements, int totalPages, boolean last) {
+    public PagedResponseModel(List<T> content, int page, int size, long totalElements, int totalPages, boolean last) {
         this.content = content;
         this.page = page;
         this.size = size;

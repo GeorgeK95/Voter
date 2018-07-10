@@ -1,10 +1,10 @@
 package bg.galaxi.voter.model.dto;
 
-public class ChoiceVoteCount {
+public class ChoiceVoteCountDto {
     private Long choiceId;
     private Long voteCount;
 
-    public ChoiceVoteCount(Long choiceId, Long voteCount) {
+    public ChoiceVoteCountDto(Long choiceId, Long voteCount) {
         this.choiceId = choiceId;
         this.voteCount = voteCount;
     }

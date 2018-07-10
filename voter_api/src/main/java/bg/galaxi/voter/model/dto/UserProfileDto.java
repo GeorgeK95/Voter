@@ -2,7 +2,7 @@ package bg.galaxi.voter.model.dto;
 
 import java.time.Instant;
 
-public class UserProfile {
+public class UserProfileDto {
     private Long id;
     private String username;
     private String name;
@@ -10,7 +10,7 @@ public class UserProfile {
     private Long pollCount;
     private Long voteCount;
 
-    public UserProfile(Long id, String username, String name, Instant joinedAt, Long pollCount, Long voteCount) {
+    public UserProfileDto(Long id, String username, String name, Instant joinedAt, Long pollCount, Long voteCount) {
         this.id = id;
         this.username = username;
         this.name = name;

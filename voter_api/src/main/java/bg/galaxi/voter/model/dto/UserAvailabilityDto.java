@@ -1,9 +1,9 @@
 package bg.galaxi.voter.model.dto;
 
-public class UserAvailability {
+public class UserAvailabilityDto {
     private Boolean available;
 
-    public UserAvailability(Boolean available) {
+    public UserAvailabilityDto(Boolean available) {
         this.available = available;
     }
 

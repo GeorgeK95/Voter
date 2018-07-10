@@ -2,7 +2,7 @@ package bg.galaxi.voter.model.request;
 
 import javax.validation.constraints.NotBlank;
 
-public class LoginRequest {
+public class LoginRequestModel {
     @NotBlank
     private String usernameOrEmail;
 

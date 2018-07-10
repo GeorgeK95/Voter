@@ -28,6 +28,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] permitted = new String[]{
+
+    };
+
     @Autowired
     CustomUserDetailsService customUserDetailsService;
 

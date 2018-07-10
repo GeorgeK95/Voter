@@ -4,10 +4,10 @@ import bg.galaxi.voter.exception.InternalServerErrorException;
 import bg.galaxi.voter.model.entity.Role;
 import bg.galaxi.voter.model.enumeration.RoleName;
 import bg.galaxi.voter.model.entity.User;
-import bg.galaxi.voter.model.response.ApiResponse;
-import bg.galaxi.voter.model.response.JwtAuthenticationResponse;
-import bg.galaxi.voter.model.request.LoginRequest;
-import bg.galaxi.voter.model.request.SignUpRequest;
+import bg.galaxi.voter.model.response.ApiResponseModel;
+import bg.galaxi.voter.model.response.JwtAuthenticationResponseModel;
+import bg.galaxi.voter.model.request.LoginRequestModel;
+import bg.galaxi.voter.model.request.SignUpRequestModel;
 import bg.galaxi.voter.repository.RoleRepository;
 import bg.galaxi.voter.repository.UserRepository;
 import bg.galaxi.voter.security.jwt.JwtTokenProvider;
@@ -49,36 +49,36 @@ public class AuthController {
     JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestModel loginRequestModel) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsernameOrEmail(),
-                        loginRequest.getPassword()
+                        loginRequestModel.getUsernameOrEmail(),
+                        loginRequestModel.getPassword()
                 )
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        return ResponseEntity.ok(new JwtAuthenticationResponseModel(jwt));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequestModel signUpRequestModel) {
+        if (userRepository.existsByUsername(signUpRequestModel.getUsername())) {
+            return new ResponseEntity(new ApiResponseModel(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
+        if (userRepository.existsByEmail(signUpRequestModel.getEmail())) {
+            return new ResponseEntity(new ApiResponseModel(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
         // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), signUpRequest.getPassword());
+        User user = new User(signUpRequestModel.getName(), signUpRequestModel.getUsername(),
+                signUpRequestModel.getEmail(), signUpRequestModel.getPassword());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -93,6 +93,6 @@ public class AuthController {
                 .fromCurrentContextPath().path("/users/{username}")
                 .buildAndExpand(result.getUsername()).toUri();
 
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+        return ResponseEntity.created(location).body(new ApiResponseModel(true, "User registered successfully"));
     }
 }
