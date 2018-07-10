@@ -5,6 +5,7 @@ import bg.galaxi.voter.model.User;
 import bg.galaxi.voter.payload.*;
 import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.repository.UserRepository;
+import bg.galaxi.voter.repository.VoteRepository;
 import bg.galaxi.voter.security.CurrentUser;
 import bg.galaxi.voter.security.UserPrincipal;
 import bg.galaxi.voter.service.PollService;
@@ -25,8 +26,8 @@ public class UserController {
     @Autowired
     private PollRepository pollRepository;
 
-    /*@Autowired
-    private VoteRepository voteRepository;*/
+    @Autowired
+    private VoteRepository voteRepository;
 
     @Autowired
     private PollService pollService;
@@ -56,7 +57,7 @@ public class UserController {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
         long pollCount = pollRepository.countByCreatedBy(user.getId());
-        long voteCount = 0;//voteRepository.countByUserId(user.getId());
+        long voteCount = voteRepository.countByUserId(user.getId());
 
         UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount);
 
