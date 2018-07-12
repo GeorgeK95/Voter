@@ -12,11 +12,12 @@ import {
     GET_CURRENT_USER_URL,
     CREATE_POLL_URL,
 } from '../util/webConstants';
+
 import {API_BASE_URL} from "./webConstants";
 
 const request = (options) => {
     const headers = new Headers({
-        CONTENT_TYPE: APPLICATION_JSON,
+        'Content-Type': APPLICATION_JSON,
     })
 
     if (localStorage.getItem(ACCESS_TOKEN)) {

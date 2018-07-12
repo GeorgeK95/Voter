@@ -23,7 +23,6 @@ export const PASSWORD_MAX_LENGTH = 20;
 export const HTTP_GET = 'GET';
 export const HTTP_POST = 'POST';
 
-export const CONTENT_TYPE = 'Content-Type';
 export const APPLICATION_JSON = 'application/json';
 
 export const AUTHORIZATION = 'Authorization';

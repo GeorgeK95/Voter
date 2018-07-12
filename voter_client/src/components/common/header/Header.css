@@ -12,6 +12,7 @@
 
 .app-title a:hover {
     text-decoration: none;
+    color: floralwhite;
 }
 
 .ant-menu-item-selected {
@@ -39,7 +40,8 @@
 }
 
 .ant-menu-horizontal > .ant-menu-item > a:hover {
-    color: floralwhite;
+    color: white;
+    border-bottom: 2px solid lawngreen;
 }
 
 .app-header {
