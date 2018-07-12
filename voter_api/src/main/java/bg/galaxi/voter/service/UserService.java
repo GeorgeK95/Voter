@@ -8,10 +8,11 @@ import bg.galaxi.voter.model.entity.User;
 import bg.galaxi.voter.model.enumeration.RoleName;
 import bg.galaxi.voter.model.request.SignUpRequestModel;
 import bg.galaxi.voter.model.response.ApiResponseModel;
+import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.repository.UserRepository;
-import bg.galaxi.voter.service.api.IPollService;
 import bg.galaxi.voter.service.api.IRoleService;
 import bg.galaxi.voter.service.api.IUserService;
+import bg.galaxi.voter.service.api.IVoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,16 +37,20 @@ public class UserService implements IUserService {
 
     private final IRoleService roleService;
 
-    private final IPollService pollService;
+    private final PollRepository pollRepository;
 
     private final PasswordEncoder passwordEncoder;
 
+    private final IVoteService voteService;
+
     @Autowired
-    public UserService(UserRepository userRepository, IRoleService roleService, PasswordEncoder passwordEncoder, IPollService pollService) {
+    public UserService(UserRepository userRepository, IRoleService roleService, PollRepository pollRepository,
+                       PasswordEncoder passwordEncoder, IVoteService voteService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.pollRepository = pollRepository;
         this.passwordEncoder = passwordEncoder;
-        this.pollService = pollService;
+        this.voteService = voteService;
     }
 
     @Override
@@ -104,8 +109,8 @@ public class UserService implements IUserService {
         User user = this.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException(USER, USERNAME, username));
 
-        long pollCount = this.pollService.countByCreatedBy(user.getId());
-        long voteCount = this.pollService.countByUserId(user.getId());
+        long pollCount = this.pollRepository.countByCreatedBy(user.getId());
+        long voteCount = this.voteService.countByUserId(user.getId());
 
         return new UserProfileDto(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount);
     }

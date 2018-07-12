@@ -33,7 +33,8 @@ class HeaderComponent extends Component {
                 </Menu.Item>,
                 <Menu.Item key="/poll/new">
                     <Link to="/poll/new">
-                        <img src={voteIcon} alt="poll" className="poll-icon"/>
+                        <Icon type="plus" className="nav-icon"/>
+                        {/*<img src={voteIcon} alt="poll" className="poll-icon"/>*/}
                     </Link>
                 </Menu.Item>,
                 <Menu.Item key="/profile" className="profile-menu">

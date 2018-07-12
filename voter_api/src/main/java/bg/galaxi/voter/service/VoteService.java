@@ -52,4 +52,9 @@ public class VoteService implements IVoteService {
     public List<Vote> findByUserIdAndPollIdIn(Long id, List<Long> pollIds) {
         return this.voteRepository.findByUserIdAndPollIdIn(id, pollIds);
     }
+
+    @Override
+    public long countByUserId(Long id) {
+        return this.voteRepository.countByUserId(id);
+    }
 }

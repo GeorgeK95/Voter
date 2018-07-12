@@ -19,4 +19,6 @@ public interface IVoteService {
     List<ChoiceVoteCountDto> countByPollIdInGroupByChoiceId(List<Long> pollIds);
 
     List<Vote> findByUserIdAndPollIdIn(Long id, List<Long> pollIds);
+
+    long countByUserId(Long id);
 }

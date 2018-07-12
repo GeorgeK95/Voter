@@ -30,5 +30,6 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
 
     @Query("SELECT v.poll.id FROM Vote v WHERE v.user.id = :userId")
     Page<Long> findVotedPollIdsByUserId(@Param("userId") Long userId, Pageable pageable);
+
 }
 

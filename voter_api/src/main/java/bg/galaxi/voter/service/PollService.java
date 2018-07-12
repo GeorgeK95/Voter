@@ -29,6 +29,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -43,6 +44,7 @@ import java.util.stream.Collectors;
 import static bg.galaxi.voter.util.AppConstants.*;
 
 @Service
+@Transactional
 public class PollService implements IPollService {
 
     private final PollRepository pollRepository;
@@ -76,12 +78,12 @@ public class PollService implements IPollService {
         Map<Long, Long> pollUserVoteMap = getPollUserVoteMap(currentUser, pollIds);
         Map<Long, User> creatorMap = getPollCreatorMap(polls.getContent());
 
-        List<PollResponseModel> pollResponsModels = polls.map(poll -> ModelMapper.mapPollToPollResponse(poll,
+        List<PollResponseModel> pollResponseModels = polls.map(poll -> ModelMapper.mapPollToPollResponse(poll,
                 choiceVoteCountMap,
                 creatorMap.get(poll.getCreatedBy()),
                 pollUserVoteMap == null ? null : pollUserVoteMap.getOrDefault(poll.getId(), null))).getContent();
 
-        return new PagedResponseModel<>(pollResponsModels, polls.getNumber(),
+        return new PagedResponseModel<>(pollResponseModels, polls.getNumber(),
                 polls.getSize(), polls.getTotalElements(), polls.getTotalPages(), polls.isLast());
     }
 
@@ -238,7 +240,7 @@ public class PollService implements IPollService {
 
     @Override
     public long countByUserId(Long id) {
-        return this.pollRepository.countByUserId(id);
+        return this.voteService.countByUserId(id);
     }
 
     @Override
