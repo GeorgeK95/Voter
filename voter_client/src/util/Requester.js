@@ -8,17 +8,11 @@ import {
     AUTHORIZATION,
     SIGN_IN_URL,
     SIGN_UP_URL,
-    USERNAME_AVAILABILITY_URL,
-    GET_USER_VOTED_POLLS,
-    GET_USER_CREATED_POLLS,
-    GET_USER_PROFILE_URL,
     NO_ACCESS_TOKEN_SET_MESSAGE,
     GET_CURRENT_USER_URL,
-    EMAIL_AVAILABILITY_URL,
-    CAST_VOTE,
     CREATE_POLL_URL,
-    ALL_POLLS_URL
 } from '../util/webConstants';
+import {API_BASE_URL} from "./webConstants";
 
 const request = (options) => {
     const headers = new Headers({
@@ -47,6 +41,8 @@ export function getAllPolls(page, size) {
     page = page || 0;
     size = size || POLL_LIST_SIZE;
 
+    const ALL_POLLS_URL = API_BASE_URL + "/polls?page=" + page + "&size=" + size;
+
     return request({
         url: ALL_POLLS_URL,
         method: HTTP_GET
@@ -62,6 +58,8 @@ export function createPoll(pollData) {
 }
 
 export function castVote(voteData) {
+    const CAST_VOTE = API_BASE_URL + "/polls/" + voteData.pollId + "/votes";
+
     return request({
         url: CAST_VOTE,
         method: HTTP_POST,
@@ -86,6 +84,8 @@ export function signup(signupRequest) {
 }
 
 export function checkUsernameAvailability(username) {
+    const USERNAME_AVAILABILITY_URL = API_BASE_URL + "/user/checkUsernameAvailability?username=" + username;
+
     return request({
         url: USERNAME_AVAILABILITY_URL,
         method: HTTP_GET
@@ -93,6 +93,8 @@ export function checkUsernameAvailability(username) {
 }
 
 export function checkEmailAvailability(email) {
+    const EMAIL_AVAILABILITY_URL = API_BASE_URL + "/user/checkEmailAvailability?email=" + email;
+
     return request({
         url: EMAIL_AVAILABILITY_URL,
         method: HTTP_GET
@@ -112,6 +114,8 @@ export function getCurrentUser() {
 }
 
 export function getUserProfile(username) {
+    const GET_USER_PROFILE_URL = API_BASE_URL + "/users/" + username;
+
     return request({
         url: GET_USER_PROFILE_URL,
         method: HTTP_GET
@@ -122,6 +126,8 @@ export function getUserCreatedPolls(username, page, size) {
     page = page || 0;
     size = size || POLL_LIST_SIZE;
 
+    const GET_USER_CREATED_POLLS = API_BASE_URL + "/users/" + username + "/polls?page=" + page + "&size=" + size;
+
     return request({
         url: GET_USER_CREATED_POLLS,
         method: HTTP_GET
@@ -131,6 +137,8 @@ export function getUserCreatedPolls(username, page, size) {
 export function getUserVotedPolls(username, page, size) {
     page = page || 0;
     size = size || POLL_LIST_SIZE;
+
+    const GET_USER_VOTED_POLLS = API_BASE_URL + "/users/" + username + "/votes?page=" + page + "&size=" + size;
 
     return request({
         url: GET_USER_VOTED_POLLS,

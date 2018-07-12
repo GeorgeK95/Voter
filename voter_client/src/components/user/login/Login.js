@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {login} from '../../util/Requester';
+import {login} from '../../../util/Requester';
 import './Login.css';
 import {Link} from 'react-router-dom';
 import {
@@ -9,7 +9,7 @@ import {
     PLEASE_INPUT_YOUR_PASSWORD_MESSAGE,
     PLEASE_INPUT_YOUR_USERNAME_EMAIL_MESSAGE,
     SOMETHING_WENT_WRONG_MESSAGE
-} from '../../util/webConstants';
+} from '../../../util/webConstants';
 
 import {Form, Input, Button, Icon, notification} from 'antd';
 

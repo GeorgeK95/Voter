@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import PollList from '../../poll/PollList';
-import {getUserProfile} from '../../util/Requester';
+import {getUserProfile} from '../../../util/Requester';
 import {Avatar, Tabs} from 'antd';
-import {getAvatarColor} from '../../util/Colors';
-import {formatDate} from '../../util/Helpers';
-import LoadingIndicator from '../../common/LoadingIndicator';
+import {getAvatarColor} from '../../../util/Colors';
+import {formatDate} from '../../../util/DateFormatter';
+import LoadingIndicator from '../../common/indicator/Loading';
 import './Profile.css';
-import NotFound from '../../common/NotFound';
-import ServerError from '../../common/ServerError';
+import ResourceNotFound from '../../common/error/ResourceNotFound';
+import ServerError from '../../common/error/InternalServerError';
 
 const TabPane = Tabs.TabPane;
 
@@ -66,7 +66,7 @@ class Profile extends Component {
         }
 
         if (this.state.notFound) {
-            return <NotFound/>;
+            return <ResourceNotFound/>;
         }
 
         if (this.state.serverError) {

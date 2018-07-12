@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {signup, checkUsernameAvailability, checkEmailAvailability} from '../../util/Requester';
+import {signup, checkUsernameAvailability, checkEmailAvailability} from '../../../util/Requester';
 import './Signup.css';
 import {Link} from 'react-router-dom';
 import {
@@ -18,8 +18,13 @@ import {
     NAME_TOO_SHORT_MESSAGE,
     PASSWORD_TOO_SHORT_MESSAGE,
     PASSWORD_TOO_LONG_MESSAGE,
-    APP_NAME
-} from '../../util/webConstants';
+    APP_NAME,
+    EMAIL_ALREADY_REGISTERED_MESSAGE,
+    EMAIL_TOO_LONG_MESSAGE,
+    EMPTY_EMAIL_MESSAGE,
+    NOT_VALID_EMAIL_MESSAGE, USERNAME_ALREADY_TAKEN_MESSAGE, USERNAME_TOO_LONG_MESSAGE,
+    USERNAME_TOO_SHORT_MESSAGE, VALIDATING, EMAIL_REGEX
+} from '../../../util/webConstants';
 
 import {Form, Input, Button, notification} from 'antd';
 
@@ -194,7 +199,7 @@ class Signup extends Component {
         if (!email) {
             return {
                 validateStatus: ERROR,
-                errorMsg: EMTPY_EMAIL_MESSAGE
+                errorMsg: EMPTY_EMAIL_MESSAGE
             }
         }
 
@@ -223,7 +228,7 @@ class Signup extends Component {
 
             return {
                 validateStatus: ERROR,
-                errorMsg: USERNAME_TOO_sHORT_MESSAGE
+                errorMsg: USERNAME_TOO_SHORT_MESSAGE
             }
         } else if (username.length > USERNAME_MAX_LENGTH) {
             return {

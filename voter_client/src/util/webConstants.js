@@ -33,19 +33,22 @@ export const ACCESS_TOKEN = 'accessToken';
 //urls
 export const SIGN_IN_URL = API_BASE_URL + "/auth/signin";
 export const SIGN_UP_URL = API_BASE_URL + "/auth/signup";
-export const USERNAME_AVAILABILITY_URL = API_BASE_URL + "/user/checkUsernameAvailability?username=" + username;
-export const GET_USER_VOTED_POLLS = API_BASE_URL + "/users/" + username + "/votes?page=" + page + "&size=" + size;
-export const GET_USER_CREATED_POLLS = API_BASE_URL + "/users/" + username + "/polls?page=" + page + "&size=" + size;
-export const GET_USER_PROFILE_URL = API_BASE_URL + "/users/" + username;
 export const NO_ACCESS_TOKEN_SET_MESSAGE = "No access token set.";
 export const GET_CURRENT_USER_URL = API_BASE_URL + "/user/me";
-export const EMAIL_AVAILABILITY_URL = API_BASE_URL + "/user/checkEmailAvailability?email=" + email;
-export const CAST_VOTE = API_BASE_URL + "/polls/" + voteData.pollId + "/votes";
 export const CREATE_POLL_URL = API_BASE_URL + "/polls";
-export const ALL_POLLS_URL = API_BASE_URL + "/polls?page=" + page + "&size=" + size;
+export const SLASH_URL = "/";
+export const LOGIN_URL = '/login';
 
 export const SUCCESS = 'success';
 export const ERROR = 'error';
+export const USER_CREATED_POLLS = 'USER_CREATED_POLLS';
+export const USER_VOTED_POLLS = 'USER_VOTED_POLLS';
+export const SIGN_OUT = "logout";
+
+//notification
+export const NOTIFICATION_TOP = 70;
+export const NOTIFICATION_DURATION = 3;
+export const TOP_RIGHT = 'topRight';
 
 //messages
 export const INVALID_CREDENTIALS_MESSAGE = 'Your Username or Password is incorrect. Please try again!';
@@ -60,10 +63,24 @@ export const PASSWORD_TOO_LONG_MESSAGE = `Password is too long (Maximum ${PASSWO
 export const VALIDATING = 'validating';
 export const USERNAME_ALREADY_TAKEN_MESSAGE = 'This username is already taken';
 export const EMAIL_ALREADY_REGISTERED_MESSAGE = 'This Email is already registered';
-export const USERNAME_TOO_sHORT_MESSAGE = `Username is too short (Minimum ${USERNAME_MIN_LENGTH} characters needed.)`;
+export const USERNAME_TOO_SHORT_MESSAGE = `Username is too short (Minimum ${USERNAME_MIN_LENGTH} characters needed.)`;
 export const USERNAME_TOO_LONG_MESSAGE = `Username is too long (Maximum ${USERNAME_MAX_LENGTH} characters allowed.)`;
 export const EMAIL_REGEX_EXPRESSION = '[^@ ]+@[^@ ]+\\.[^@ ]+';
 export const EMAIL_TOO_LONG_MESSAGE = `Email is too long (Maximum ${EMAIL_MAX_LENGTH} characters allowed)`;
 export const NOT_VALID_EMAIL_MESSAGE = 'Email not valid';
-export const EMTPY_EMAIL_MESSAGE = 'Email may not be empty';
+export const EMPTY_EMAIL_MESSAGE = 'Email may not be empty';
 export const EMAIL_REGEX = RegExp(EMAIL_REGEX_EXPRESSION);
+export const PLEASE_LOGIN_TO_CREATE_POLL_MESSAGE = 'You have been logged out. Please login to create poll.';
+export const PLEASE_ENTER_YOUR_QUESTION_MESSAGE = 'Please enter your question!';
+export const QUESTION_TOO_LONG_MESSAGE = `Question is too long (Maximum ${POLL_QUESTION_MAX_LENGTH} characters allowed)`;
+export const PLEASE_ENTER_CHOICE_MESSAGE = 'Please enter a choice!';
+export const CHOICE_TOO_LONG_MESSAGE = `Choice is too long (Maximum ${POLL_CHOICE_MAX_LENGTH} characters allowed)`;
+export const PLEASE_LOGIN_TO_VOTE_MESSAGE = 'You have been logged out. Please login to vote';
+export const SUCCESSFULLY_SIGNED_OUT_MESSAGE = "You're successfully logged out.";
+
+//time
+export const HOURS_LEFT = " hours left";
+export const SECONDS_LEFT = " seconds left";
+export const MINUTES_LEFT = " minutes left";
+export const DAYS_LEFT = " days left";
+export const LESS_THAN_SECOND_LEFT = "less than a second left";
