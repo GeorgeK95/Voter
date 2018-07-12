@@ -9,7 +9,7 @@ import {
 import {getCurrentUser} from '../../util/Requester';
 import {
     ACCESS_TOKEN,
-    APP_NAME,
+    APP_NAME, GLAD_TO_SEE_YOU_AGAIN_MESSAGE,
     NOTIFICATION_DURATION,
     NOTIFICATION_TOP, SLASH_URL,
     SUCCESS, SUCCESSFULLY_SIGNED_OUT_MESSAGE,
@@ -94,7 +94,7 @@ class App extends Component {
     handleLogin() {
         notification.success({
             message: APP_NAME,
-            description: SUCCESSFULLY_SIGNED_OUT_MESSAGE,
+            description: GLAD_TO_SEE_YOU_AGAIN_MESSAGE,
         });
         this.loadCurrentUser();
         this.props.history.push(SLASH_URL);

@@ -76,6 +76,7 @@ export const PLEASE_ENTER_CHOICE_MESSAGE = 'Please enter a choice!';
 export const CHOICE_TOO_LONG_MESSAGE = `Choice is too long (Maximum ${POLL_CHOICE_MAX_LENGTH} characters allowed)`;
 export const PLEASE_LOGIN_TO_VOTE_MESSAGE = 'You have been logged out. Please login to vote';
 export const SUCCESSFULLY_SIGNED_OUT_MESSAGE = "You're successfully logged out.";
+export const GLAD_TO_SEE_YOU_AGAIN_MESSAGE = "Glad to see you again.";
 
 //time
 export const HOURS_LEFT = " hours left";

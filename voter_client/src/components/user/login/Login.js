@@ -4,7 +4,7 @@ import './Login.css';
 import {Link} from 'react-router-dom';
 import {
     ACCESS_TOKEN,
-    APP_NAME,
+    APP_NAME, GLAD_TO_SEE_YOU_AGAIN_MESSAGE,
     INVALID_CREDENTIALS_MESSAGE,
     PLEASE_INPUT_YOUR_PASSWORD_MESSAGE,
     PLEASE_INPUT_YOUR_USERNAME_EMAIL_MESSAGE,
@@ -66,6 +66,7 @@ class LoginForm extends Component {
 
     render() {
         const {getFieldDecorator} = this.props.form;
+
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
