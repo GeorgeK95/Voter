@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {createPoll} from '../../util/Requester';
+import {createPoll, getContextTags} from '../../util/Requester';
 import {
     MAX_CHOICES,
     POLL_QUESTION_MAX_LENGTH,
@@ -11,10 +11,15 @@ import {
     PLEASE_LOGIN_TO_CREATE_POLL_MESSAGE,
     LOGIN_URL,
     SLASH_URL,
-    PLEASE_ENTER_YOUR_QUESTION_MESSAGE, QUESTION_TOO_LONG_MESSAGE, PLEASE_ENTER_CHOICE_MESSAGE, CHOICE_TOO_LONG_MESSAGE
+    PLEASE_ENTER_YOUR_QUESTION_MESSAGE,
+    QUESTION_TOO_LONG_MESSAGE,
+    PLEASE_ENTER_CHOICE_MESSAGE,
+    CHOICE_TOO_LONG_MESSAGE,
+    HASHTAG
 } from '../../util/webConstants';
 import './NewPoll.css';
 import {Form, Input, Button, Icon, Select, Col, notification} from 'antd';
+import PopUp from "../common/popup/PopUp";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -28,6 +33,7 @@ class NewPoll extends Component {
             question: {
                 text: ''
             },
+            tags: HASHTAG,
             choices: [{
                 text: ''
             }, {
@@ -36,13 +42,15 @@ class NewPoll extends Component {
             pollLength: {
                 days: 1,
                 hours: 0
-            }
+            },
+            tagsContent: []
         };
 
         this.addChoice = this.addChoice.bind(this);
         this.removeChoice = this.removeChoice.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleQuestionChange = this.handleQuestionChange.bind(this);
+        this.handleTagChange = this.handleTagChange.bind(this);
         this.handleChoiceChange = this.handleChoiceChange.bind(this);
         this.handlePollDaysChange = this.handlePollDaysChange.bind(this);
         this.handlePollHoursChange = this.handlePollHoursChange.bind(this);
@@ -68,10 +76,15 @@ class NewPoll extends Component {
     handleSubmit(event) {
         event.preventDefault();
 
+        let splittedTags = this.state.tags.split("#");
+
         const pollData = {
             question: this.state.question.text,
             choices: this.state.choices.map(choice => {
                 return {text: choice.text}
+            }),
+            tags: splittedTags.map(tag => {
+                return {text: tag}
             }),
             pollLength: this.state.pollLength
         };
@@ -81,7 +94,6 @@ class NewPoll extends Component {
                 this.props.history.push(SLASH_URL);
             }).catch(error => {
             if (error.status === 401) {
-
                 this.props.handleLogout(LOGIN_URL, ERROR, PLEASE_LOGIN_TO_CREATE_POLL_MESSAGE);
             } else {
                 notification.error({
@@ -118,6 +130,30 @@ class NewPoll extends Component {
                 text: value,
                 ...this.validateQuestion(value)
             }
+        });
+    }
+
+    handleTagChange(event) {
+        let tag = event.target.value;
+
+        if (!tag.includes(HASHTAG) || tag.includes(' ') || tag.includes('\n')) {
+            tag = HASHTAG;
+            return;
+        }
+
+        let lastTag = tag.substring(tag.lastIndexOf(HASHTAG));
+
+        getContextTags(lastTag)
+            .then(res => {
+                this.setState({
+                    tagsContent: res
+                });
+            })
+            .catch(err => {
+            });
+
+        this.setState({
+            tags: tag
         });
     }
 
@@ -174,11 +210,15 @@ class NewPoll extends Component {
 
     render() {
         const choiceViews = [];
+
         this.state.choices.forEach((choice, index) => {
             choiceViews.push(<PollChoice key={index} choice={choice} choiceNumber={index}
                                          removeChoice={this.removeChoice}
                                          handleChoiceChange={this.handleChoiceChange}/>);
         });
+
+        let popUp;
+        if (this.state.tagsContent.length !== 0) popUp = <PopUp tags={this.state.tagsContent}/>;
 
         return (
             <div className="new-poll-container">
@@ -194,6 +234,18 @@ class NewPoll extends Component {
                             name="question"
                             value={this.state.question.text}
                             onChange={this.handleQuestionChange}/>
+                        </FormItem>
+
+                        {popUp}
+
+                        <FormItem>
+                             <Input
+                                 placeholder="#tag#tag#tag"
+                                 style={{fontSize: '16px'}}
+                                 // autosize={{minRows: 3, maxRows: 6}}
+                                 // name="question"
+                                 value={this.state.tags}
+                                 onChange={this.handleTagChange}/>
                         </FormItem>
                         {choiceViews}
                         <FormItem className="poll-form-row">

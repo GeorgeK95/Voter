@@ -11,7 +11,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static bg.galaxi.voter.util.AppConstants.*;
 
@@ -26,6 +28,13 @@ public class Poll extends UserDateAudit {
     @NotBlank
     @Size(max = QUESTION_MAX_VALUE)
     private String question;
+
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = POLL_TAG,
+            joinColumns = @JoinColumn(name = POLL_ID),
+            inverseJoinColumns = @JoinColumn(name = TAG_ID))
+    private Set<Tag> tags = new HashSet<>();
 
     @OneToMany(
             mappedBy = POLL,
@@ -73,6 +82,14 @@ public class Poll extends UserDateAudit {
         this.expirationDateTime = expirationDateTime;
     }
 
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
     public void addChoice(Choice choice) {
         choices.add(choice);
         choice.setPoll(this);
@@ -81,5 +98,10 @@ public class Poll extends UserDateAudit {
     public void removeChoice(Choice choice) {
         choices.remove(choice);
         choice.setPoll(null);
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+        tag.addPoll(this);
     }
 }

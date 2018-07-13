@@ -47,7 +47,6 @@ public class UserController {
     @GetMapping(USER_CHECK_EMAIL_AVAILABILITY_URL)
     public UserAvailabilityDto checkEmailAvailability(@RequestParam(value = EMAIL) String email) {
         return new UserAvailabilityDto(!this.userService.existsByEmail(email));
-
     }
 
     @GetMapping(USERS_USERNAME_URL)

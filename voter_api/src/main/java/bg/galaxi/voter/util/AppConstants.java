@@ -24,7 +24,9 @@ public interface AppConstants {
     String USERS_USERNAME_URL = "/users/{username}";
     String ALL_URL = "/**";
     String API_POLLS_URL = "/api/polls";
+    String API_TAGS_URL = "/api/tags";
     String POLL_ID_URL = "/{pollId}";
+    String TAG_NAME_URL = "/{content}";
     String POLL_ID_VOTES_URL = "/{pollId}/votes";
     String API_URL = "/api";
     String USER_ME_URL = "/user/me";
@@ -47,6 +49,7 @@ public interface AppConstants {
 
     //    PreAuthorize params
     String HAS_ROLE_USER = "hasRole('USER')";
+    String HAS_ANY_ROLE_AUTH = "hasAnyRole('USER', 'ADMIN')";
 
     //    JWT
     String $_APP_JWT_SECRET = "${app.jwtSecret}";
@@ -70,16 +73,20 @@ public interface AppConstants {
     int CHOISES_BATCH_SIZE = 30;
     int QUESTION_MAX_VALUE = 140;
     int ROLE_NAME_LENGH_VALUE = 60;
+    int TAG_NAME_LENGH_VALUE = 100;
     String USERS = "users";
     String ROLES = "roles";
+    String TAGS = "Tags";
     int NAME_MAX_VALUE = 40;
     int NAME_MIN_VALUE = 4;
     int USER_NAME_MIN_VALUE = 3;
     int USER_NAME_MAX_VALUE = 15;
     int EMAIL_MAX_VALUE = 40;
     int PASSWORD_MAX_VALUE = 100;
+    String POLL_TAG = "poll_tag";
     String USER_ROLES = "user_roles";
     String USER_ID = "user_id";
+    String TAG_ID = "tag_id";
     String ROLE_ID = "role_id";
     String VOTES = "votes";
     String CHOICE_ID = "choice_id";

@@ -2,11 +2,9 @@ package bg.galaxi.voter.service;
 
 import bg.galaxi.voter.exception.BadRequestException;
 import bg.galaxi.voter.exception.ResourceNotFoundException;
-import bg.galaxi.voter.model.entity.Choice;
+import bg.galaxi.voter.model.entity.*;
 import bg.galaxi.voter.model.dto.ChoiceVoteCountDto;
-import bg.galaxi.voter.model.entity.Poll;
-import bg.galaxi.voter.model.entity.User;
-import bg.galaxi.voter.model.entity.Vote;
+import bg.galaxi.voter.model.request.TagRequestModel;
 import bg.galaxi.voter.model.response.ApiResponseModel;
 import bg.galaxi.voter.model.response.PagedResponseModel;
 import bg.galaxi.voter.model.request.PollRequestModel;
@@ -153,6 +151,10 @@ public class PollService implements IPollService {
         pollRequestModel.getChoices().forEach(choiceRequest -> {
             poll.addChoice(new Choice(choiceRequest.getText()));
         });
+
+        pollRequestModel.getTags().stream()
+                .filter(tag -> !tag.getText().isEmpty())
+                .forEach(tag -> poll.addTag(new Tag(tag.getText())));
 
         Instant now = Instant.now();
         Instant expirationDateTime = now.plus(Duration.ofDays(pollRequestModel.getPollLength().getDays()))

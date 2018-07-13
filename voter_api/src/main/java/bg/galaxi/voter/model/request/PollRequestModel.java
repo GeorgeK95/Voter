@@ -1,6 +1,7 @@
 package bg.galaxi.voter.model.request;
 
 import bg.galaxi.voter.model.dto.PollLength;
+import org.springframework.lang.Nullable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +15,9 @@ public class PollRequestModel {
     @NotBlank
     @Size(max = QUESTION_MAX_VALUE)
     private String question;
+
+    @Nullable
+    private List<ChoiceRequestModel> tags;
 
     @NotNull
     @Size(min = CHOISES_MIN_VALUE, max = CHOISES_MAX_VALUE)
@@ -46,5 +50,13 @@ public class PollRequestModel {
 
     public void setPollLength(PollLength pollLength) {
         this.pollLength = pollLength;
+    }
+
+    public List<ChoiceRequestModel> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<ChoiceRequestModel> tags) {
+        this.tags = tags;
     }
 }

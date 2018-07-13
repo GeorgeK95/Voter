@@ -4,9 +4,9 @@ import {
     withRouter
 } from 'react-router-dom';
 import './Header.css';
-import voteIcon from '../../../voter.svg';
 import {Layout, Menu, Dropdown, Icon} from 'antd';
 import {SIGN_OUT} from "../../../util/webConstants";
+import SearchBox from "../search/SearchBox";
 
 const Header = Layout.Header;
 
@@ -34,7 +34,6 @@ class HeaderComponent extends Component {
                 <Menu.Item key="/poll/new">
                     <Link to="/poll/new">
                         <Icon type="plus" className="nav-icon"/>
-                        {/*<img src={voteIcon} alt="poll" className="poll-icon"/>*/}
                     </Link>
                 </Menu.Item>,
                 <Menu.Item key="/profile" className="profile-menu">
@@ -60,6 +59,9 @@ class HeaderComponent extends Component {
                     <div className="app-title">
                         <Link to="/">Voter</Link>
                     </div>
+
+                    <SearchBox/>
+
                     <Menu
                         className="app-menu"
                         mode="horizontal"
