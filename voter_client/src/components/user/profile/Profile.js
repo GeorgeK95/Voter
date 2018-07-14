@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import PollList from '../../poll/PollList';
 import {getUserProfile} from '../../../util/Requester';
-import {Avatar, Tabs} from 'antd';
+import {Button, Avatar, Tabs, Icon} from 'antd';
 import {getAvatarColor} from '../../../util/Colors';
 import {formatDate} from '../../../util/DateFormatter';
 import LoadingIndicator from '../../common/indicator/Loading';
 import './Profile.css';
 import ResourceNotFound from '../../common/error/ResourceNotFound';
 import ServerError from '../../common/error/InternalServerError';
+import {ADMIN} from "../../../util/webConstants";
 
 const TabPane = Tabs.TabPane;
 
@@ -21,6 +22,7 @@ class Profile extends Component {
         }
 
         this.loadUserProfile = this.loadUserProfile.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     loadUserProfile(username) {
@@ -47,6 +49,12 @@ class Profile extends Component {
                 });
             }
         });
+    }
+
+    handleDelete() {
+        //TODO: send delete request with user id
+
+        console.log(this.state.user.id)
     }
 
     componentDidMount() {
@@ -77,6 +85,14 @@ class Profile extends Component {
             textAlign: 'center'
         };
 
+        let deleteUserDiv;
+        //have to take current user, not user on which profile we are
+        if (this.state.user && this.state.user.role === ADMIN)
+            deleteUserDiv =
+                <div className="delete-user-btn">
+                    <Button type="danger" onClick={this.handleDelete}>Delete</Button>
+                </div>
+
         return (
             <div className="profile">
                 {
@@ -95,6 +111,9 @@ class Profile extends Component {
                                     <div className="user-joined">
                                         Joined {formatDate(this.state.user.joinedAt)}
                                     </div>
+
+                                    {deleteUserDiv}
+
                                 </div>
                             </div>
                             <div className="user-poll-details">

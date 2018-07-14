@@ -15,4 +15,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     @Query("select t from Tag t where t.content like :param%")
     List<Tag> getTagsByName(@Param("param") String param);
+
+    @Query("select t.content from Tag t")
+    Set<String> getAllTagsAsStrings();
 }

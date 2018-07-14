@@ -96,6 +96,7 @@ class App extends Component {
             message: APP_NAME,
             description: GLAD_TO_SEE_YOU_AGAIN_MESSAGE,
         });
+
         this.loadCurrentUser();
         this.props.history.push(SLASH_URL);
     }
@@ -104,6 +105,7 @@ class App extends Component {
         if (this.state.isLoading) {
             return <LoadingIndicator/>
         }
+
         return (
             <Layout className="app-container">
                 <AppHeader isAuthenticated={this.state.isAuthenticated}

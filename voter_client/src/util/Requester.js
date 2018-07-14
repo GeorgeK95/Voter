@@ -10,7 +10,7 @@ import {
     SIGN_UP_URL,
     NO_ACCESS_TOKEN_SET_MESSAGE,
     GET_CURRENT_USER_URL,
-    CREATE_POLL_URL, GET_CONTEXT_TAGS_URL, HASHTAG, TAGS_URL,
+    CREATE_POLL_URL, GET_CONTEXT_TAGS_URL, HASHTAG, TAGS_URL, EMPTY, GET_POLLS_BY_TAGS, SPACE,
 } from '../util/webConstants';
 
 import {API_BASE_URL} from "./webConstants";
@@ -26,8 +26,6 @@ const request = (options) => {
 
     const defaults = {headers: headers};
     options = Object.assign({}, defaults, options);
-
-    // if (options.url === TAGS_URL) return;
 
     return fetch(options.url, options)
         .then(response =>
@@ -53,15 +51,22 @@ export function getAllPolls(page, size) {
 }
 
 export function getContextTags(pollData) {
-    pollData = GET_CONTEXT_TAGS_URL + pollData.substring(1);
+    pollData = GET_CONTEXT_TAGS_URL + pollData;
 
     return request({
         url: pollData,
         method: HTTP_GET
-        // body: JSON.stringify(pollData)
     });
 }
 
+export function getPollsByTags(pollData) {
+    pollData = GET_POLLS_BY_TAGS + '?tags=' + pollData;
+
+    return request({
+        url: pollData,
+        method: HTTP_GET
+    });
+}
 
 export function createPoll(pollData) {
     return request({

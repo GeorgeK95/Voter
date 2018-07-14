@@ -32,4 +32,9 @@ public class TagService implements ITagService {
 
         return DTOConverter.convert(found, TagResponseModel.class);
     }
+
+    @Override
+    public Set<String> getAllTagsAsStrings() {
+        return this.tagRepository.getAllTagsAsStrings();
+    }
 }

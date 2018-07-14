@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface IPollService {
     PagedResponseModel<PollResponseModel> getAllPolls(UserPrincipal currentUser, int page, int size);
 
@@ -31,4 +33,6 @@ public interface IPollService {
     long countByUserId(Long id);
 
     Page<Poll> findAll(Pageable pageable);
+
+    List<PollResponseModel> getPollsByTags(String tags, UserPrincipal currentUser);
 }

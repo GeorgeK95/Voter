@@ -17,7 +17,7 @@ public class PollRequestModel {
     private String question;
 
     @Nullable
-    private List<ChoiceRequestModel> tags;
+    private List<TagRequestModel> tags;
 
     @NotNull
     @Size(min = CHOISES_MIN_VALUE, max = CHOISES_MAX_VALUE)
@@ -52,11 +52,11 @@ public class PollRequestModel {
         this.pollLength = pollLength;
     }
 
-    public List<ChoiceRequestModel> getTags() {
+    public List<TagRequestModel> getTags() {
         return tags;
     }
 
-    public void setTags(List<ChoiceRequestModel> tags) {
+    public void setTags(List<TagRequestModel> tags) {
         this.tags = tags;
     }
 }

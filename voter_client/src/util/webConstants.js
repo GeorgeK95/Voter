@@ -1,10 +1,14 @@
 //app base
 export const APP_NAME = 'Voter';
 export const API_BASE_URL = 'http://localhost:7000/api';
+export const ADMIN = 'admin';
 
 //app constants
 export const HASHTAG = '#';
-export const POLL_LIST_SIZE = 30;
+export const EMPTY = '';
+export const SPACE = ' ';
+
+export const POLL_LIST_SIZE = 3; //30;
 export const MAX_CHOICES = 6;
 export const POLL_QUESTION_MAX_LENGTH = 140;
 export const POLL_CHOICE_MAX_LENGTH = 40;
@@ -36,6 +40,7 @@ export const SIGN_UP_URL = API_BASE_URL + "/auth/signup";
 export const NO_ACCESS_TOKEN_SET_MESSAGE = "No access token set.";
 export const GET_CURRENT_USER_URL = API_BASE_URL + "/user/me";
 export const CREATE_POLL_URL = API_BASE_URL + "/polls";
+export const GET_POLLS_BY_TAGS = API_BASE_URL + "/pollsByTags";
 export const GET_CONTEXT_TAGS_URL = API_BASE_URL + "/tags/";
 export const SLASH_URL = "/";
 export const LOGIN_URL = '/login';

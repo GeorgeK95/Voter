@@ -11,12 +11,24 @@ import {DAYS_LEFT, HOURS_LEFT, LESS_THAN_SECOND_LEFT, MINUTES_LEFT, SECONDS_LEFT
 const RadioGroup = Radio.Group;
 
 class Poll extends Component {
+    constructor(props) {
+        super(props)
+
+        this.handleDelete = this.handleDelete.bind(this);
+    }
+
     calculatePercentage = (choice) => {
         if (this.props.poll.totalVotes === 0) {
             return 0;
         }
         return (choice.voteCount * 100) / (this.props.poll.totalVotes);
     };
+
+    handleDelete() {
+        console.log('----poll----' + this.props.poll)
+
+        //TODO: send delete request with poll id
+    }
 
     isSelected = (choice) => {
         return this.props.poll.selectedChoice === choice.id;
@@ -76,6 +88,11 @@ class Poll extends Component {
                                         value={choice.id}>{choice.text}</Radio>)
             })
         }
+
+        let deleteSpan;
+        if (this.props.deleteEnabled) deleteSpan =
+            <Icon type="delete" spin={true} className='right-aligned' onClick={this.handleDelete}/>;
+
         return (
             <div className="poll-content">
                 <div className="poll-header">
@@ -122,6 +139,9 @@ class Poll extends Component {
                                 this.getTimeRemaining(this.props.poll)
                         }
                     </span>
+
+                    {deleteSpan}
+
                 </div>
             </div>
         );

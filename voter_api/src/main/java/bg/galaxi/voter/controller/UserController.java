@@ -21,6 +21,8 @@ import static bg.galaxi.voter.util.AppConstants.*;
 @RequestMapping(API_URL)
 public class UserController {
 
+    public static final String USER = "user";
+    public static final String ADMIN = "admin";
     private final IPollService pollService;
 
     private final IUserService userService;
@@ -36,7 +38,8 @@ public class UserController {
     @GetMapping(USER_ME_URL)
     @PreAuthorize(HAS_ROLE_USER)
     public UserContentDto getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        return new UserContentDto(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
+        return new UserContentDto(currentUser.getId(), currentUser.getUsername(), currentUser.getName(),
+                currentUser.getAuthorities().size() == 1 ? USER : ADMIN);
     }
 
     @GetMapping(USER_CHECK_USERNAME_AVAILABILITY_URL)

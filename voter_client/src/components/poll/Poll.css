@@ -18,6 +18,13 @@
     margin-bottom: 10px;
 }
 
+.right-aligned {
+    margin-top: 10px;
+    margin-right: 10px;
+    color: #d40000;
+    float: right
+}
+
 @media (max-width: 768px) {
     .poll-question {
         font-size: 18px;

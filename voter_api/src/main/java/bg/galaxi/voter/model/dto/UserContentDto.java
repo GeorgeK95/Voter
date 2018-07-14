@@ -4,6 +4,12 @@ public class UserContentDto {
     private Long id;
     private String username;
     private String name;
+    private String role;
+
+    public UserContentDto(Long id, String username, String name, String role) {
+        this(id, username, name);
+        this.role = role;
+    }
 
     public UserContentDto(Long id, String username, String name) {
         this.id = id;
@@ -33,5 +39,13 @@ public class UserContentDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

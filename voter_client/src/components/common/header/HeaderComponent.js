@@ -7,6 +7,7 @@ import './Header.css';
 import {Layout, Menu, Dropdown, Icon} from 'antd';
 import {SIGN_OUT} from "../../../util/webConstants";
 import SearchBox from "../search/SearchBox";
+import Signup from "../../user/signup/Signup";
 
 const Header = Layout.Header;
 

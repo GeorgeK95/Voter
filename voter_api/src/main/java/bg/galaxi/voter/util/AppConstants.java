@@ -2,7 +2,7 @@ package bg.galaxi.voter.util;
 
 public interface AppConstants {
     String DEFAULT_PAGE_NUMBER = "0";
-    String DEFAULT_PAGE_SIZE = "30";
+    String DEFAULT_PAGE_SIZE = "3"; //"30";
     String PAGE = "page";
     String SIZE = "size";
     int MAX_PAGE_SIZE = 50;
@@ -11,6 +11,7 @@ public interface AppConstants {
     String EMAIL = "email";
     String CREATED_AT = "createdAt";
     String UPDATED_AT = "updatedAt";
+    String SPACE = " ";
 
     //    URLS
     String API_AUTH_ALL_URL = "/api/auth/**";
@@ -24,6 +25,7 @@ public interface AppConstants {
     String USERS_USERNAME_URL = "/users/{username}";
     String ALL_URL = "/**";
     String API_POLLS_URL = "/api/polls";
+    String API_POLLS_BY_TAGS_URL = "/api/pollsByTags";
     String API_TAGS_URL = "/api/tags";
     String POLL_ID_URL = "/{pollId}";
     String TAG_NAME_URL = "/{content}";

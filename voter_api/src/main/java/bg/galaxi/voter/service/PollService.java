@@ -11,6 +11,7 @@ import bg.galaxi.voter.model.request.PollRequestModel;
 import bg.galaxi.voter.model.response.PollResponseModel;
 import bg.galaxi.voter.model.request.VoteRequestModel;
 import bg.galaxi.voter.repository.PollRepository;
+import bg.galaxi.voter.repository.TagRepository;
 import bg.galaxi.voter.security.user.UserPrincipal;
 import bg.galaxi.voter.service.api.IPollService;
 import bg.galaxi.voter.service.api.IUserService;
@@ -33,9 +34,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -53,11 +52,14 @@ public class PollService implements IPollService {
 
     private static final Logger logger = LoggerFactory.getLogger(PollService.class);
 
+    private final TagService tagService;
+
     @Autowired
-    public PollService(PollRepository pollRepository, IVoteService voteService, IUserService userService) {
+    public PollService(PollRepository pollRepository, IVoteService voteService, IUserService userService, TagService tagService) {
         this.pollRepository = pollRepository;
         this.voteService = voteService;
         this.userService = userService;
+        this.tagService = tagService;
     }
 
     public PagedResponseModel<PollResponseModel> getAllPolls(UserPrincipal currentUser, int page, int size) {
@@ -152,15 +154,20 @@ public class PollService implements IPollService {
             poll.addChoice(new Choice(choiceRequest.getText()));
         });
 
-        pollRequestModel.getTags().stream()
+        pollRequestModel.setTags(pollRequestModel.getTags().stream()
+                .filter(t -> !t.getText().isEmpty()).collect(Collectors.toList()));
+
+        /*pollRequestModel.getTags().stream()
                 .filter(tag -> !tag.getText().isEmpty())
-                .forEach(tag -> poll.addTag(new Tag(tag.getText())));
+                .forEach(tag -> poll.addTag(new Tag(tag.getText())));*/
 
         Instant now = Instant.now();
         Instant expirationDateTime = now.plus(Duration.ofDays(pollRequestModel.getPollLength().getDays()))
                 .plus(Duration.ofHours(pollRequestModel.getPollLength().getHours()));
 
         poll.setExpirationDateTime(expirationDateTime);
+
+        //TODO: tags already in db to be set to poll and mp
 
         return pollRepository.save(poll);
     }
@@ -248,6 +255,12 @@ public class PollService implements IPollService {
     @Override
     public Page<Poll> findAll(Pageable pageable) {
         return this.pollRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<PollResponseModel> getPollsByTags(String tags, UserPrincipal currentUser) {
+        //TODO: write query
+        return null;
     }
 
     private void validatePageNumberAndSize(int page, int size) {

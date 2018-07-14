@@ -4,6 +4,7 @@ import Poll from './Poll';
 import LoadingIndicator from '../common/indicator/Loading';
 import {Button, Icon, notification} from 'antd';
 import {
+    ADMIN,
     APP_NAME,
     LOGIN_URL, PLEASE_LOGIN_TO_VOTE_MESSAGE,
     POLL_LIST_SIZE,
@@ -55,21 +56,21 @@ class PollList extends Component {
         });
 
         promise
-            .then(response => {
+            .then(res => {
                 const polls = this.state.polls.slice();
                 const currentVotes = this.state.currentVotes.slice();
 
                 this.setState({
-                    polls: polls.concat(response.content),
-                    page: response.page,
-                    size: response.size,
-                    totalElements: response.totalElements,
-                    totalPages: response.totalPages,
-                    last: response.last,
-                    currentVotes: currentVotes.concat(Array(response.content.length).fill(null)),
+                    polls: polls.concat(res.content),
+                    page: res.page,
+                    size: res.size,
+                    totalElements: res.totalElements,
+                    totalPages: res.totalPages,
+                    last: res.last,
+                    currentVotes: currentVotes.concat(Array(res.content.length).fill(null)),
                     isLoading: false
                 })
-            }).catch(error => {
+            }).catch(err => {
             this.setState({
                 isLoading: false
             })
@@ -153,8 +154,13 @@ class PollList extends Component {
 
     render() {
         const pollViews = [];
+
+        let isAdmin = false;
+        if (this.props.currentUser) isAdmin = this.props.currentUser.role === ADMIN;
+
         this.state.polls.forEach((poll, pollIndex) => {
             pollViews.push(<Poll
+                deleteEnabled={isAdmin}
                 key={poll.id}
                 poll={poll}
                 currentVote={this.state.currentVotes[pollIndex]}

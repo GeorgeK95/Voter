@@ -15,10 +15,10 @@ import {
     QUESTION_TOO_LONG_MESSAGE,
     PLEASE_ENTER_CHOICE_MESSAGE,
     CHOICE_TOO_LONG_MESSAGE,
-    HASHTAG
+    HASHTAG, SPACE
 } from '../../util/webConstants';
 import './NewPoll.css';
-import {Form, Input, Button, Icon, Select, Col, notification} from 'antd';
+import {Form, AutoComplete, Input, Button, Icon, Select, Col, notification} from 'antd';
 import PopUp from "../common/popup/PopUp";
 
 const Option = Select.Option;
@@ -33,7 +33,6 @@ class NewPoll extends Component {
             question: {
                 text: ''
             },
-            tags: HASHTAG,
             choices: [{
                 text: ''
             }, {
@@ -43,6 +42,7 @@ class NewPoll extends Component {
                 days: 1,
                 hours: 0
             },
+            value: '',
             tagsContent: []
         };
 
@@ -50,6 +50,7 @@ class NewPoll extends Component {
         this.removeChoice = this.removeChoice.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleQuestionChange = this.handleQuestionChange.bind(this);
+        this.handleTagSearch = this.handleTagSearch.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
         this.handleChoiceChange = this.handleChoiceChange.bind(this);
         this.handlePollDaysChange = this.handlePollDaysChange.bind(this);
@@ -76,7 +77,9 @@ class NewPoll extends Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        let splittedTags = this.state.tags.split("#");
+        console.log(this.state.value)
+
+        let splittedTags = this.state.value.split(SPACE);
 
         const pollData = {
             question: this.state.question.text,
@@ -133,28 +136,30 @@ class NewPoll extends Component {
         });
     }
 
-    handleTagChange(event) {
-        let tag = event.target.value;
+    handleTagChange = (value) => {
+        this.setState({value});
+    };
 
-        if (!tag.includes(HASHTAG) || tag.includes(' ') || tag.includes('\n')) {
+    handleTagSearch(tag) {
+        /*if (!tag.includes(HASHTAG) || tag.includes(' ') || tag.includes('\n')) {
             tag = HASHTAG;
             return;
-        }
+        }*/
 
-        let lastTag = tag.substring(tag.lastIndexOf(HASHTAG));
+        let lastTag = tag.substring(tag.lastIndexOf(SPACE));
 
         getContextTags(lastTag)
             .then(res => {
-                this.setState({
-                    tagsContent: res
+                this.setState(() => {
+                    return {
+                        tagsContent: res.map((tagObj) => {
+                            return tagObj.content;
+                        }),
+                    }
                 });
             })
             .catch(err => {
             });
-
-        this.setState({
-            tags: tag
-        });
     }
 
     validateChoice = (choiceText) => {
@@ -217,8 +222,8 @@ class NewPoll extends Component {
                                          handleChoiceChange={this.handleChoiceChange}/>);
         });
 
-        let popUp;
-        if (this.state.tagsContent.length !== 0) popUp = <PopUp tags={this.state.tagsContent}/>;
+        /*let popUp;
+        if (this.state.tagsContent.length !== 0) popUp = <PopUp tags={this.state.tagsContent}/>;*/
 
         return (
             <div className="new-poll-container">
@@ -236,18 +241,26 @@ class NewPoll extends Component {
                             onChange={this.handleQuestionChange}/>
                         </FormItem>
 
-                        {popUp}
+                        {/*{popUp}*/}
 
                         <FormItem>
-                             <Input
+                            <AutoComplete
+                                dataSource={this.state.tagsContent}
+                                onSearch={this.handleTagSearch}
+                                onChange={this.handleTagChange}
+                                placeholder="Enter tags..."
+                            />
+                            {/*<Input
                                  placeholder="#tag#tag#tag"
                                  style={{fontSize: '16px'}}
                                  // autosize={{minRows: 3, maxRows: 6}}
                                  // name="question"
                                  value={this.state.tags}
-                                 onChange={this.handleTagChange}/>
+                                 onChange={this.handleTagChange}/>*/}
                         </FormItem>
+
                         {choiceViews}
+
                         <FormItem className="poll-form-row">
                             <Button type="dashed" onClick={this.addChoice}
                                     disabled={this.state.choices.length === MAX_CHOICES}>
