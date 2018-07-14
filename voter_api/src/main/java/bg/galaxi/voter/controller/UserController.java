@@ -21,8 +21,9 @@ import static bg.galaxi.voter.util.AppConstants.*;
 @RequestMapping(API_URL)
 public class UserController {
 
-    public static final String USER = "user";
-    public static final String ADMIN = "admin";
+    private static final String USER = "user";
+    private static final String ADMIN = "admin";
+
     private final IPollService pollService;
 
     private final IUserService userService;
@@ -73,4 +74,9 @@ public class UserController {
         return this.pollService.getPollsVotedBy(username, currentUser, page, size);
     }
 
+    @GetMapping(USERS_DELETE_USERNAME_URL)
+    @PreAuthorize(HAS_ROLE_ADMIN)
+    public boolean deleteUser(@PathVariable(value = USERNAME) String username) {
+        return this.userService.deleteUser(username);
+    }
 }

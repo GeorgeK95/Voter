@@ -50,6 +50,8 @@ public class Poll extends UserDateAudit {
     @NotNull
     private Instant expirationDateTime;
 
+    private Boolean isDeleted = false;
+
     public Long getId() {
         return id;
     }
@@ -88,6 +90,14 @@ public class Poll extends UserDateAudit {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public void addChoice(Choice choice) {

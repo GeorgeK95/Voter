@@ -24,4 +24,6 @@ public interface IUserService {
     User getOne(Long id);
 
     List<User> findByIdIn(List<Long> creatorIds);
+
+    boolean deleteUser(String username);
 }

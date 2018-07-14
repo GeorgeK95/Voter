@@ -18,4 +18,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     @Query("select t.content from Tag t")
     Set<String> getAllTagsAsStrings();
+
+    Tag findByContent(String text);
 }

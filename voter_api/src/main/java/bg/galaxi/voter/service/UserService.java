@@ -129,4 +129,9 @@ public class UserService implements IUserService {
     public List<User> findByIdIn(List<Long> creatorIds) {
         return this.userRepository.findByIdIn(creatorIds);
     }
+
+    @Override
+    public boolean deleteUser(String username) {
+        return this.userRepository.deleteByUsername(username);
+    }
 }

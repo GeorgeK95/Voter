@@ -37,4 +37,9 @@ public class TagService implements ITagService {
     public Set<String> getAllTagsAsStrings() {
         return this.tagRepository.getAllTagsAsStrings();
     }
+
+    @Override
+    public Tag findByName(String text) {
+        return this.tagRepository.findByContent(text);
+    }
 }

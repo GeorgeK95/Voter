@@ -35,4 +35,7 @@ public interface IPollService {
     Page<Poll> findAll(Pageable pageable);
 
     List<PollResponseModel> getPollsByTags(String tags, UserPrincipal currentUser);
+
+    boolean deletePoll(Long pollId, UserPrincipal currentUser);
+
 }

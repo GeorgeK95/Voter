@@ -146,7 +146,7 @@ class NewPoll extends Component {
             return;
         }*/
 
-        let lastTag = tag.substring(tag.lastIndexOf(SPACE));
+        let lastTag = tag.substring(tag.lastIndexOf(SPACE) + 1);
 
         getContextTags(lastTag)
             .then(res => {

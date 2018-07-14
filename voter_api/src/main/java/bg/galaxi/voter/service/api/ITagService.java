@@ -1,5 +1,6 @@
 package bg.galaxi.voter.service.api;
 
+import bg.galaxi.voter.model.entity.Tag;
 import bg.galaxi.voter.model.request.TagRequestModel;
 import bg.galaxi.voter.model.response.TagResponseModel;
 
@@ -10,4 +11,6 @@ public interface ITagService {
     List<TagResponseModel> getTagsByName(String tagRequestModel);
 
     Set<String> getAllTagsAsStrings();
+
+    Tag findByName(String text);
 }

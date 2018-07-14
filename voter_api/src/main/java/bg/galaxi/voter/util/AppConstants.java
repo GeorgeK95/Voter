@@ -29,6 +29,7 @@ public interface AppConstants {
     String API_TAGS_URL = "/api/tags";
     String POLL_ID_URL = "/{pollId}";
     String TAG_NAME_URL = "/{content}";
+    String DELETE_POLL_BY_ID = "/delete/{pollId}";
     String POLL_ID_VOTES_URL = "/{pollId}/votes";
     String API_URL = "/api";
     String USER_ME_URL = "/user/me";
@@ -36,6 +37,7 @@ public interface AppConstants {
     String USER_CHECK_EMAIL_AVAILABILITY_URL = "/user/checkEmailAvailability";
     String USERS_USERNAME_POLLS_URL = "/users/{username}/polls";
     String USERS_USERNAME_VOTES_URL = "/users/{username}/votes";
+    String USERS_DELETE_USERNAME_URL = "/users/delete/{username}";
 
     //    MESSAGES
     String POLL_CREATED_SUCCESSFULLY_MESSAGE = "Poll Created Successfully";
@@ -51,6 +53,7 @@ public interface AppConstants {
 
     //    PreAuthorize params
     String HAS_ROLE_USER = "hasRole('USER')";
+    String HAS_ROLE_ADMIN = "hasRole('ADMIN')";
     String HAS_ANY_ROLE_AUTH = "hasAnyRole('USER', 'ADMIN')";
 
     //    JWT
@@ -69,6 +72,7 @@ public interface AppConstants {
     int TEXT_MAX_VALUE = 40;
     String POLL_ID = "poll_id";
     String POLLS = "polls";
+    String LOGGER = "logger";
     String POLL = "poll";
     int CHOISES_MIN_VALUE = 2;
     int CHOISES_MAX_VALUE = 6;

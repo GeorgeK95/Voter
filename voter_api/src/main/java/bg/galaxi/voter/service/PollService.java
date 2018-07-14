@@ -4,6 +4,8 @@ import bg.galaxi.voter.exception.BadRequestException;
 import bg.galaxi.voter.exception.ResourceNotFoundException;
 import bg.galaxi.voter.model.entity.*;
 import bg.galaxi.voter.model.dto.ChoiceVoteCountDto;
+import bg.galaxi.voter.model.enumeration.ActionMade;
+import bg.galaxi.voter.model.enumeration.AffectedTable;
 import bg.galaxi.voter.model.request.TagRequestModel;
 import bg.galaxi.voter.model.response.ApiResponseModel;
 import bg.galaxi.voter.model.response.PagedResponseModel;
@@ -11,8 +13,8 @@ import bg.galaxi.voter.model.request.PollRequestModel;
 import bg.galaxi.voter.model.response.PollResponseModel;
 import bg.galaxi.voter.model.request.VoteRequestModel;
 import bg.galaxi.voter.repository.PollRepository;
-import bg.galaxi.voter.repository.TagRepository;
 import bg.galaxi.voter.security.user.UserPrincipal;
+import bg.galaxi.voter.service.api.ILoggerService;
 import bg.galaxi.voter.service.api.IPollService;
 import bg.galaxi.voter.service.api.IUserService;
 import bg.galaxi.voter.service.api.IVoteService;
@@ -54,12 +56,15 @@ public class PollService implements IPollService {
 
     private final TagService tagService;
 
+    private final ILoggerService loggerService;
+
     @Autowired
-    public PollService(PollRepository pollRepository, IVoteService voteService, IUserService userService, TagService tagService) {
+    public PollService(PollRepository pollRepository, IVoteService voteService, IUserService userService, TagService tagService, ILoggerService loggerService) {
         this.pollRepository = pollRepository;
         this.voteService = voteService;
         this.userService = userService;
         this.tagService = tagService;
+        this.loggerService = loggerService;
     }
 
     public PagedResponseModel<PollResponseModel> getAllPolls(UserPrincipal currentUser, int page, int size) {
@@ -168,6 +173,11 @@ public class PollService implements IPollService {
         poll.setExpirationDateTime(expirationDateTime);
 
         //TODO: tags already in db to be set to poll and mp
+        for (TagRequestModel tagRequestModel : pollRequestModel.getTags()) {
+            Tag byName = this.tagService.findByName(tagRequestModel.getText());
+
+            poll.addTag(Objects.requireNonNullElseGet(byName, () -> new Tag(tagRequestModel.getText())));
+        }
 
         return pollRepository.save(poll);
     }
@@ -261,6 +271,18 @@ public class PollService implements IPollService {
     public List<PollResponseModel> getPollsByTags(String tags, UserPrincipal currentUser) {
         //TODO: write query
         return null;
+    }
+
+    @Override
+    public boolean deletePoll(Long pollId, UserPrincipal currentUser) {
+        bg.galaxi.voter.model.entity.Logger l = new bg.galaxi.voter.model.entity.Logger(
+                AffectedTable.POll, ActionMade.DELETE
+        );
+
+        this.pollRepository.deleteById(pollId);
+        this.loggerService.persist(l);
+
+        return true;
     }
 
     private void validatePageNumberAndSize(int page, int size) {
