@@ -46,6 +46,9 @@ public class Poll extends UserDateAudit {
     @BatchSize(size = CHOISES_BATCH_SIZE)
     private List<Choice> choices = new ArrayList<>();
 
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.REMOVE)
+    private List<Vote> votes = new ArrayList<>();
+
     @NotNull
     private Instant expirationDateTime;
 
@@ -97,6 +100,14 @@ public class Poll extends UserDateAudit {
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
     }
 
     public void addChoice(Choice choice) {

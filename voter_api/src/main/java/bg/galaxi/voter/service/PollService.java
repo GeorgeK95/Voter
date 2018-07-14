@@ -67,14 +67,14 @@ public class PollService implements IPollService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
 
-        List<Poll> list = this.pollRepository.findAll(pageable)
+        /*List<Poll> list = this.pollRepository.findAll(pageable)
                 .filter(p -> !p.getDeleted())
                 .stream()
                 .collect(Collectors.toList());
 
-        Page<Poll> polls = new PageImpl<>(list);
+        Page<Poll> polls = new PageImpl<>(list);*/
 
-        Page<Poll> polls1 = this.pollRepository.findAll(pageable);
+        Page<Poll> polls = this.pollRepository.findAll(pageable);
 
         if (polls.getNumberOfElements() == 0) {
             return new PagedResponseModel<>(Collections.emptyList(), polls.getNumber(),
@@ -87,6 +87,7 @@ public class PollService implements IPollService {
         Map<Long, User> creatorMap = getPollCreatorMap(polls.getContent());
 
         List<PollResponseModel> pollResponseModels = polls.map(poll -> CustomModelMapper.mapEntityToResponseModel(poll,
+                choiceVoteCountMap,
                 creatorMap.get(poll.getCreatedBy()),
                 pollUserVoteMap == null ? null : pollUserVoteMap.getOrDefault(poll.getId(), null))).getContent();
 
@@ -113,6 +114,7 @@ public class PollService implements IPollService {
         Map<Long, Long> pollUserVoteMap = getPollUserVoteMap(currentUser, pollIds);
 
         List<PollResponseModel> pollResponseModels = polls.map(poll -> CustomModelMapper.mapEntityToResponseModel(poll,
+                choiceVoteCountMap,
                 user,
                 pollUserVoteMap == null ? null : pollUserVoteMap.getOrDefault(poll.getId(), null))).getContent();
 
@@ -145,6 +147,7 @@ public class PollService implements IPollService {
         Map<Long, User> creatorMap = getPollCreatorMap(polls);
 
         List<PollResponseModel> pollResponsModels = polls.stream().map(poll -> CustomModelMapper.mapEntityToResponseModel(poll,
+                choiceVoteCountMap,
                 creatorMap.get(poll.getCreatedBy()),
                 pollUserVoteMap == null ? null : pollUserVoteMap.getOrDefault(poll.getId(), null))).collect(Collectors.toList());
 
@@ -191,8 +194,8 @@ public class PollService implements IPollService {
     private PollResponseModel pollResponseMiddleware(Poll poll, Long pollId, UserPrincipal currentUser) {
         List<ChoiceVoteCountDto> votes = this.voteService.countByPollIdGroupByChoiceId(pollId);
 
-       /* Map<Long, Long> choiceVotesMap = votes.stream()
-                .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));*/
+        Map<Long, Long> choiceVotesMap = votes.stream()
+                .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));
 
         User creator = this.userService.findById(poll.getCreatedBy())
                 .orElseThrow(() -> new ResourceNotFoundException(USER, ID, poll.getCreatedBy()));
@@ -202,7 +205,7 @@ public class PollService implements IPollService {
             userVote = this.voteService.findByUserIdAndPollId(currentUser.getId(), pollId);
         }
 
-        return CustomModelMapper.mapEntityToResponseModel(poll,
+        return CustomModelMapper.mapEntityToResponseModel(poll, choiceVotesMap,
                 creator, userVote != null ? userVote.getChoice().getId() : null);
     }
 
@@ -235,13 +238,13 @@ public class PollService implements IPollService {
 
         List<ChoiceVoteCountDto> votes = this.voteService.countByPollIdGroupByChoiceId(pollId);
 
-       /* Map<Long, Long> choiceVotesMap = votes.stream()
-                .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));*/
+        Map<Long, Long> choiceVotesMap = votes.stream()
+                .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));
 
         User creator = this.userService.findById(poll.getCreatedBy())
                 .orElseThrow(() -> new ResourceNotFoundException(USER, ID, poll.getCreatedBy()));
 
-        return CustomModelMapper.mapEntityToResponseModel(poll, creator, vote.getChoice().getId());
+        return CustomModelMapper.mapEntityToResponseModel(poll, choiceVotesMap, creator, vote.getChoice().getId());
     }
 
     public ResponseEntity<?> createPollExpanded(PollRequestModel pollRequestModel) {
@@ -294,14 +297,18 @@ public class PollService implements IPollService {
 
     @Override
     public boolean deletePoll(Long pollId, UserPrincipal currentUser) {
-        Optional<Poll> isFound = this.pollRepository.findById(pollId);
+        /*Optional<Poll> isFound = this.pollRepository.findById(pollId);
 
         if (isFound.isPresent()) {
             Poll poll = isFound.get();
             poll.setDeleted(true);
 
             this.pollRepository.save(poll);
-        }
+        }*/
+
+        Poll poll = this.pollRepository.findById(pollId).get();
+
+        this.pollRepository.deleteById(pollId);
 
         return true;
     }

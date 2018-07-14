@@ -13,7 +13,8 @@ import {
     LESS_THAN_SECOND_LEFT,
     MINUTES_LEFT, NOTIFICATION_BANNED_MESSAGE,
     SECONDS_LEFT,
-    SPACE} from "../../util/webConstants";
+    SPACE
+} from "../../util/webConstants";
 import {deletePoll} from "../../util/Requester";
 import {notification} from "antd/lib/index";
 
@@ -123,8 +124,11 @@ class Poll extends Component {
             })
         }
 
+        let pollDivClassName = 'poll-content';
+        if (this.state.isDeleted) pollDivClassName = 'hide';
+
         return (
-            <div className="poll-content">
+            <div className={pollDivClassName}>
                 <div className="poll-header">
                     <div className="poll-creator-info">
                         <Link className="creator-link" to={`/users/${this.props.poll.createdBy.username}`}>
