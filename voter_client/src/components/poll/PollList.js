@@ -83,8 +83,7 @@ class PollList extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let pollsAfterSearch = nextProps.foundPollsByTags || [];
-        console.log('pollsAfterSearch' + pollsAfterSearch)
+        let pollsAfterSearch = nextProps.foundPollsByTags || this.state.polls;
 
         this.setState({polls: pollsAfterSearch})
 
@@ -162,8 +161,6 @@ class PollList extends Component {
 
         let isAdmin = false;
         if (this.props.currentUser) isAdmin = this.props.currentUser.role === ADMIN;
-
-        console.log('this.state.polls---->>>>' + this.state.polls)
 
         this.state.polls.forEach((poll, pollIndex) => {
             pollViews.push(<Poll
