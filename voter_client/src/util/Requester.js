@@ -10,8 +10,7 @@ import {
     SIGN_UP_URL,
     NO_ACCESS_TOKEN_SET_MESSAGE,
     GET_CURRENT_USER_URL,
-    CREATE_POLL_URL, GET_CONTEXT_TAGS_URL, HASHTAG, TAGS_URL, EMPTY, GET_POLLS_BY_TAGS, SPACE,
-} from '../util/webConstants';
+    CREATE_POLL_URL, GET_CONTEXT_TAGS_URL, GET_POLLS_BY_TAGS, } from '../util/webConstants';
 
 import {API_BASE_URL} from "./webConstants";
 
@@ -97,7 +96,7 @@ export function login(loginRequest) {
 export function signup(signupRequest) {
     return request({
         url: SIGN_UP_URL,
-        method: 'POST',
+        method: HTTP_POST,
         body: JSON.stringify(signupRequest)
     });
 }
@@ -162,5 +161,23 @@ export function getUserVotedPolls(username, page, size) {
     return request({
         url: GET_USER_VOTED_POLLS,
         method: HTTP_GET
+    });
+}
+
+export function deletePoll(pollId) {
+    const DELETE_POLL_URL = API_BASE_URL + "/polls/delete/" + pollId;
+
+    return request({
+        url: DELETE_POLL_URL,
+        method: HTTP_POST
+    });
+}
+
+export function banUser(userId) {
+    const BAN_USER_URL = API_BASE_URL + "/users/delete/" + userId;
+
+    return request({
+        url: BAN_USER_URL,
+        method: HTTP_POST
     });
 }

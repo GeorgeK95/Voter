@@ -1,9 +1,8 @@
+/*
 package bg.galaxi.voter.model.entity;
 
 import bg.galaxi.voter.model.enumeration.ActionMade;
 import bg.galaxi.voter.model.enumeration.AffectedTable;
-import bg.galaxi.voter.model.enumeration.RoleName;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
@@ -58,3 +57,4 @@ public class Logger {
         this.action = action;
     }
 }
+*/

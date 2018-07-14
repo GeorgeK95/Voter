@@ -37,7 +37,7 @@ public interface AppConstants {
     String USER_CHECK_EMAIL_AVAILABILITY_URL = "/user/checkEmailAvailability";
     String USERS_USERNAME_POLLS_URL = "/users/{username}/polls";
     String USERS_USERNAME_VOTES_URL = "/users/{username}/votes";
-    String USERS_DELETE_USERNAME_URL = "/users/delete/{username}";
+    String USERS_DELETE_ID_URL = "/users/delete/{id}";
 
     //    MESSAGES
     String POLL_CREATED_SUCCESSFULLY_MESSAGE = "Poll Created Successfully";
@@ -97,6 +97,7 @@ public interface AppConstants {
     String VOTES = "votes";
     String CHOICE_ID = "choice_id";
     String USER_NOT_FOUND_WITH_USERNAME_OR_EMAIL_MESSAGE = "User not found with username or email : ";
+    String BANNED_USER_MESSAGE = "User was banned from admin.";
     String ID = "id";
     String SORRY_THIS_POLL_HAS_ALREADY_EXPIRED_MESSAGE = "Sorry! This Poll has already expired";
     String CHOICE = "Choice";

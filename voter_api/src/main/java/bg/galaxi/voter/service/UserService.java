@@ -3,6 +3,7 @@ package bg.galaxi.voter.service;
 import bg.galaxi.voter.exception.InternalServerErrorException;
 import bg.galaxi.voter.exception.ResourceNotFoundException;
 import bg.galaxi.voter.model.dto.UserProfileDto;
+import bg.galaxi.voter.model.entity.Poll;
 import bg.galaxi.voter.model.entity.Role;
 import bg.galaxi.voter.model.entity.User;
 import bg.galaxi.voter.model.enumeration.RoleName;
@@ -116,7 +117,7 @@ public class UserService implements IUserService {
         long voteCount = this.voteService.countByUserId(user.getId());
 
         return new UserProfileDto(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount,
-                user.getRoles().size() > 1 ? ADMIN : USER);
+                user.getRoles().size() > 1 ? ADMIN : USER, user.getBanned());
     }
 
     @Override
@@ -135,7 +136,16 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean deleteUser(String username) {
-        return this.userRepository.deleteByUsername(username);
+    public boolean deleteUser(Long id) {
+        Optional<User> isFound = this.userRepository.findById(id);
+
+        if (isFound.isPresent()) {
+            User user = isFound.get();
+            user.setBanned(true);
+
+            this.userRepository.save(user);
+        }
+
+        return true;
     }
 }

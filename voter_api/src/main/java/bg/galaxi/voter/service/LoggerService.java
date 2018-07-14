@@ -1,3 +1,4 @@
+/*
 package bg.galaxi.voter.service;
 
 import bg.galaxi.voter.model.entity.Logger;
@@ -23,3 +24,4 @@ public class LoggerService implements ILoggerService {
         return true;
     }
 }
+*/

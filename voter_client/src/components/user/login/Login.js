@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {login} from '../../../util/Requester';
 import './Login.css';
-import {Link} from 'react-router-dom';
 import {
     ACCESS_TOKEN,
     APP_NAME, INVALID_CREDENTIALS_MESSAGE,
@@ -93,7 +92,6 @@ class LoginForm extends Component {
                 </FormItem>
                 <FormItem>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Login</Button>
-                    Or <Link to="/signup">Click here to sign up.</Link>
                 </FormItem>
             </Form>
         );

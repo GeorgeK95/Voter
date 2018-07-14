@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static bg.galaxi.voter.util.AppConstants.*;
 
 @Service
@@ -20,15 +22,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String usernameOrEmail)
+    public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        // Let people login with either username or email
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException(USER_NOT_FOUND_WITH_USERNAME_OR_EMAIL_MESSAGE + usernameOrEmail)
-                );
+        Optional<User> user = userRepository.findByUsername(username);
 
-        return UserPrincipal.create(user);
+        if (!user.isPresent())
+            new UsernameNotFoundException(USER_NOT_FOUND_WITH_USERNAME_OR_EMAIL_MESSAGE + username);
+
+        if (user.get().getBanned()) new UsernameNotFoundException(BANNED_USER_MESSAGE);
+
+        return UserPrincipal.create(user.get());
     }
 
     @Transactional

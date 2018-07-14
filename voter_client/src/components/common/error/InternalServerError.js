@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import './InternalServerError.css';
-import {Link} from 'react-router-dom';
-import {Button} from 'antd';
 
 class NotFound extends Component {
     render() {

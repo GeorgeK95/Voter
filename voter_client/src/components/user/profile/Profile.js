@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import PollList from '../../poll/PollList';
-import {getUserProfile} from '../../../util/Requester';
-import {Button, Avatar, Tabs, Icon} from 'antd';
+import {banUser, getUserProfile} from '../../../util/Requester';
+import {Button, Avatar, Tabs} from 'antd';
 import {getAvatarColor} from '../../../util/Colors';
 import {formatDate} from '../../../util/DateFormatter';
 import LoadingIndicator from '../../common/indicator/Loading';
 import './Profile.css';
 import ResourceNotFound from '../../common/error/ResourceNotFound';
 import ServerError from '../../common/error/InternalServerError';
-import {ADMIN} from "../../../util/webConstants";
+import {ADMIN, APP_NAME, USER_BANNED_MESSAGE} from "../../../util/webConstants";
+import {notification} from "antd/lib/index";
 
 const TabPane = Tabs.TabPane;
 
@@ -18,6 +19,7 @@ class Profile extends Component {
 
         this.state = {
             user: null,
+            isBanned: false,
             isLoading: false
         }
 
@@ -52,9 +54,15 @@ class Profile extends Component {
     }
 
     handleDelete() {
-        //TODO: send delete request with user id
+        banUser(this.state.user.id)
+            .then(res => {
+                if (res === true) this.setState({isBanned: true});
 
-        console.log('-----user-----' + this.state.user.id)
+                notification.success({
+                    message: APP_NAME,
+                    description: USER_BANNED_MESSAGE,
+                });
+            });
     }
 
     componentDidMount() {
@@ -87,7 +95,12 @@ class Profile extends Component {
 
         let deleteUserDiv;
 
-        if (this.props.currentUser && this.props.currentUser.role === ADMIN &&
+        if (this.state.isBanned || (this.state.user && this.state.user.banned)) {
+            deleteUserDiv =
+                <div className="delete-user-btn">
+                    <Button type="danger" style={{disabled: true}}>Banned</Button>
+                </div>
+        } else if (this.props.currentUser && this.props.currentUser.role === ADMIN &&
             this.state.user && this.state.user.role !== ADMIN) {
             deleteUserDiv =
                 <div className="delete-user-btn">

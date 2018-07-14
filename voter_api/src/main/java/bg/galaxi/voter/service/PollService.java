@@ -4,8 +4,6 @@ import bg.galaxi.voter.exception.BadRequestException;
 import bg.galaxi.voter.exception.ResourceNotFoundException;
 import bg.galaxi.voter.model.entity.*;
 import bg.galaxi.voter.model.dto.ChoiceVoteCountDto;
-import bg.galaxi.voter.model.enumeration.ActionMade;
-import bg.galaxi.voter.model.enumeration.AffectedTable;
 import bg.galaxi.voter.model.request.TagRequestModel;
 import bg.galaxi.voter.model.response.ApiResponseModel;
 import bg.galaxi.voter.model.response.PagedResponseModel;
@@ -14,7 +12,6 @@ import bg.galaxi.voter.model.response.PollResponseModel;
 import bg.galaxi.voter.model.request.VoteRequestModel;
 import bg.galaxi.voter.repository.PollRepository;
 import bg.galaxi.voter.security.user.UserPrincipal;
-import bg.galaxi.voter.service.api.ILoggerService;
 import bg.galaxi.voter.service.api.IPollService;
 import bg.galaxi.voter.service.api.IUserService;
 import bg.galaxi.voter.service.api.IVoteService;
@@ -24,10 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,22 +50,30 @@ public class PollService implements IPollService {
 
     private final TagService tagService;
 
-    private final ILoggerService loggerService;
+//    private final ILoggerService loggerService;
 
     @Autowired
-    public PollService(PollRepository pollRepository, IVoteService voteService, IUserService userService, TagService tagService, ILoggerService loggerService) {
+    public PollService(PollRepository pollRepository, IVoteService voteService, IUserService userService, TagService tagService/*, ILoggerService loggerService*/) {
         this.pollRepository = pollRepository;
         this.voteService = voteService;
         this.userService = userService;
         this.tagService = tagService;
-        this.loggerService = loggerService;
+//        this.loggerService = loggerService;
     }
 
     public PagedResponseModel<PollResponseModel> getAllPolls(UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
-        Page<Poll> polls = this.pollRepository.findAll(pageable);
+
+        List<Poll> list = this.pollRepository.findAll(pageable)
+                .filter(p -> !p.getDeleted())
+                .stream()
+                .collect(Collectors.toList());
+
+        Page<Poll> polls = new PageImpl<>(list);
+
+//        Page<Poll> polls = this.pollRepository.findAll(pageable);
 
         if (polls.getNumberOfElements() == 0) {
             return new PagedResponseModel<>(Collections.emptyList(), polls.getNumber(),
@@ -291,12 +293,14 @@ public class PollService implements IPollService {
 
     @Override
     public boolean deletePoll(Long pollId, UserPrincipal currentUser) {
-        bg.galaxi.voter.model.entity.Logger l = new bg.galaxi.voter.model.entity.Logger(
-                AffectedTable.POll, ActionMade.DELETE
-        );
+        Optional<Poll> isFound = this.pollRepository.findById(pollId);
 
-        this.pollRepository.deleteById(pollId);
-        this.loggerService.persist(l);
+        if (isFound.isPresent()) {
+            Poll poll = isFound.get();
+            poll.setDeleted(true);
+
+            this.pollRepository.save(poll);
+        }
 
         return true;
     }
@@ -308,15 +312,15 @@ public class PollService implements IPollService {
             throw new BadRequestException(PAGE_SIZE_MUST_NOT_BE_GREATER_THAN_MESSAGE + AppConstants.MAX_PAGE_SIZE);
     }
 
-   /* private Map<Long, Long> getChoiceVoteCountMap(List<Long> pollIds) {
-        List<ChoiceVoteCountDto> votes = this.voteService.countByPollIdInGroupByChoiceId(pollIds);
+    /* private Map<Long, Long> getChoiceVoteCountMap(List<Long> pollIds) {
+         List<ChoiceVoteCountDto> votes = this.voteService.countByPollIdInGroupByChoiceId(pollIds);
 
-        Map<Long, Long> choiceVotesMap = votes.stream()
-                .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));
+         Map<Long, Long> choiceVotesMap = votes.stream()
+                 .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));
 
-        return choiceVotesMap;
-    }
-*/
+         return choiceVotesMap;
+     }
+ */
     private Map<Long, Long> getPollUserVoteMap(UserPrincipal currentUser, List<Long> pollIds) {
         Map<Long, Long> pollUserVoteMap = null;
         if (currentUser != null) {

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {signup, checkUsernameAvailability, checkEmailAvailability} from '../../../util/Requester';
 import './Signup.css';
-import {Link} from 'react-router-dom';
 import {
     NAME_MIN_LENGTH,
     NAME_MAX_LENGTH,
@@ -166,7 +165,6 @@ class Signup extends Component {
                                     size="large"
                                     className="signup-form-button"
                                     disabled={this.isFormInvalid()}>Sign up</Button>
-                            Already registed? <Link to="/login">Login now!</Link>
                         </FormItem>
                     </Form>
                 </div>

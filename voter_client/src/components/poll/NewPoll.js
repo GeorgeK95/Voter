@@ -15,11 +15,10 @@ import {
     QUESTION_TOO_LONG_MESSAGE,
     PLEASE_ENTER_CHOICE_MESSAGE,
     CHOICE_TOO_LONG_MESSAGE,
-    HASHTAG, SPACE
+    SPACE
 } from '../../util/webConstants';
 import './NewPoll.css';
 import {Form, AutoComplete, Input, Button, Icon, Select, Col, notification} from 'antd';
-import PopUp from "../common/popup/PopUp";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -139,11 +138,6 @@ class NewPoll extends Component {
     };
 
     handleTagSearch(tag) {
-        /*if (!tag.includes(HASHTAG) || tag.includes(' ') || tag.includes('\n')) {
-            tag = HASHTAG;
-            return;
-        }*/
-
         let lastTag = tag.substring(tag.lastIndexOf(SPACE) + 1);
 
         getContextTags(lastTag)

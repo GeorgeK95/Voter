@@ -25,5 +25,5 @@ public interface IUserService {
 
     List<User> findByIdIn(List<Long> creatorIds);
 
-    boolean deleteUser(String username);
+    boolean deleteUser(Long username);
 }

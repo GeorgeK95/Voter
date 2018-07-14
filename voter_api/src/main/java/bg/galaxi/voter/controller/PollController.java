@@ -58,7 +58,7 @@ public class PollController {
         return pollService.castVoteAndGetUpdatedPoll(pollId, voteRequestModel, currentUser);
     }
 
-    @DeleteMapping(DELETE_POLL_BY_ID)
+    @PostMapping(DELETE_POLL_BY_ID)
     @PreAuthorize(HAS_ROLE_ADMIN)
     public boolean deletePollProcess(@CurrentUser UserPrincipal currentUser, @PathVariable Long pollId) {
         return pollService.deletePoll(pollId, currentUser);

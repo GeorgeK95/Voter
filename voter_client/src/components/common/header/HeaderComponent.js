@@ -9,6 +9,7 @@ import {SIGN_OUT} from "../../../util/webConstants";
 import SearchBox from "../search/SearchBox";
 
 const Header = Layout.Header;
+const LOGO_PNG = require('../../../logo/voter.png');
 
 class HeaderComponent extends Component {
     constructor(props) {
@@ -58,9 +59,7 @@ class HeaderComponent extends Component {
             <Header className="app-header">
                 <div className="container">
                     <div className="app-title">
-                        <img src='https://pbs.twimg.com/profile_images/684471274194649088/6Y_UXIZy_400x400.png'
-                             width='50px' height='50px'/>
-                        {/*<Link to="/">Voter</Link>*/}
+                        <img src={LOGO_PNG} width='50px' height='50px' alt='logo'/>
                     </div>
 
                     <SearchBox onSearchButtonClicked={this.props.onSearch}/>

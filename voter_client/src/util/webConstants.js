@@ -27,6 +27,7 @@ export const PASSWORD_MAX_LENGTH = 20;
 //http
 export const HTTP_GET = 'GET';
 export const HTTP_POST = 'POST';
+export const HTTP_DELETE = 'DELETE';
 
 export const APPLICATION_JSON = 'application/json';
 
@@ -83,6 +84,8 @@ export const QUESTION_TOO_LONG_MESSAGE = `Question is too long (Maximum ${POLL_Q
 export const PLEASE_ENTER_CHOICE_MESSAGE = 'Please enter a choice!';
 export const CHOICE_TOO_LONG_MESSAGE = `Choice is too long (Maximum ${POLL_CHOICE_MAX_LENGTH} characters allowed)`;
 export const PLEASE_LOGIN_TO_VOTE_MESSAGE = 'You have been logged out. Please login to vote';
+export const USER_BANNED_MESSAGE = 'User was banned.';
+export const NOTIFICATION_BANNED_MESSAGE = 'Poll was removed.';
 export const SUCCESSFULLY_SIGNED_OUT_MESSAGE = "You're successfully logged out.";
 export const GLAD_TO_SEE_YOU_AGAIN_MESSAGE = "Glad to see you again.";
 

@@ -6,13 +6,26 @@ import {getAvatarColor} from '../../util/Colors';
 import {formatDateTime} from '../../util/DateFormatter';
 
 import {Radio, Button} from 'antd';
-import {DAYS_LEFT, HOURS_LEFT, LESS_THAN_SECOND_LEFT, MINUTES_LEFT, SECONDS_LEFT, SPACE} from "../../util/webConstants";
+import {
+    APP_NAME,
+    DAYS_LEFT,
+    HOURS_LEFT,
+    LESS_THAN_SECOND_LEFT,
+    MINUTES_LEFT, NOTIFICATION_BANNED_MESSAGE,
+    SECONDS_LEFT,
+    SPACE} from "../../util/webConstants";
+import {deletePoll} from "../../util/Requester";
+import {notification} from "antd/lib/index";
 
 const RadioGroup = Radio.Group;
 
 class Poll extends Component {
     constructor(props) {
         super(props)
+
+        this.state = {
+            isDeleted: false
+        };
 
         this.handleDelete = this.handleDelete.bind(this);
     }
@@ -25,9 +38,15 @@ class Poll extends Component {
     };
 
     handleDelete() {
-        console.log('----poll----' + this.props.poll)
+        deletePoll(this.props.poll.id)
+            .then(() => {
+                this.setState({isDeleted: true});
 
-        //TODO: send delete request with poll id
+                notification.success({
+                    message: APP_NAME,
+                    description: NOTIFICATION_BANNED_MESSAGE,
+                });
+            });
     }
 
     isSelected = (choice) => {
@@ -66,7 +85,7 @@ class Poll extends Component {
         }
 
         return timeRemaining;
-    }
+    };
 
     render() {
         const pollChoices = [];
@@ -90,7 +109,10 @@ class Poll extends Component {
         }
 
         let deleteSpan;
-        if (this.props.deleteEnabled) deleteSpan =
+
+        if (this.state.isDeleted) deleteSpan =
+            <Icon type="delete" style={{fontSize: 20}} className='right-aligned' styles={{disabled: true}}/>;
+        else if (this.props.deleteEnabled) deleteSpan =
             <Icon type="delete" style={{fontSize: 20}} className='right-aligned' onClick={this.handleDelete}/>;
 
         let tags = '';
@@ -100,8 +122,6 @@ class Poll extends Component {
                 tags += t.content + SPACE;
             })
         }
-
-        console.log(tags)
 
         return (
             <div className="poll-content">
@@ -168,7 +188,7 @@ function CompletedOrVotedPollChoice(props) {
             <span className="cv-poll-choice-details">
                 <span className="cv-choice-percentage">
                     {Math.round(props.percentVote * 100) / 100}%
-                </span>            
+                </span>
                 <span className="cv-choice-text">
                     {props.choice.text}
                 </span>
@@ -178,7 +198,7 @@ function CompletedOrVotedPollChoice(props) {
                             className="selected-choice-icon"
                             type="check-circle-o"
                         />) : null
-                }    
+                }
             </span>
             <span className={props.isWinner ? 'cv-choice-percent-chart winner' : 'cv-choice-percent-chart'}
                   style={{width: props.percentVote + '%'}}>

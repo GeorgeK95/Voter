@@ -55,6 +55,7 @@ public class UserController {
 
     @GetMapping(USERS_USERNAME_URL)
     public UserProfileDto getUserProfile(@PathVariable(value = USERNAME) String username) {
+        //is banned?
         return this.userService.getUserProfile(username);
     }
 
@@ -74,9 +75,10 @@ public class UserController {
         return this.pollService.getPollsVotedBy(username, currentUser, page, size);
     }
 
-    @GetMapping(USERS_DELETE_USERNAME_URL)
+    @PostMapping(USERS_DELETE_ID_URL)
     @PreAuthorize(HAS_ROLE_ADMIN)
-    public boolean deleteUser(@PathVariable(value = USERNAME) String username) {
-        return this.userService.deleteUser(username);
+    public boolean deleteUser(@PathVariable(value = ID) Long id) {
+        return this.userService.deleteUser(id);
+
     }
 }

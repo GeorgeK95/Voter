@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {AutoComplete, Button, Form} from 'antd';
-import {getContextTags, getPollsByTags} from "../../../util/Requester";
+import {AutoComplete, Button} from 'antd';
+import {getContextTags} from "../../../util/Requester";
 import {SPACE} from "../../../util/webConstants";
 
 class SearchBox extends Component {

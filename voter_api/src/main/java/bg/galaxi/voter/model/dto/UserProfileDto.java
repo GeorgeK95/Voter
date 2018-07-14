@@ -7,11 +7,13 @@ public class UserProfileDto {
     private String username;
     private String name;
     private String role;
+    private Boolean isBanned = false;
     private Instant joinedAt;
     private Long pollCount;
     private Long voteCount;
 
-    public UserProfileDto(Long id, String username, String name, Instant joinedAt, Long pollCount, Long voteCount, String roleName) {
+    public UserProfileDto(Long id, String username, String name, Instant joinedAt, Long pollCount,
+                          Long voteCount, String roleName, Boolean isBanned) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -19,6 +21,7 @@ public class UserProfileDto {
         this.pollCount = pollCount;
         this.voteCount = voteCount;
         this.role = roleName;
+        this.isBanned = isBanned;
     }
 
     public Long getId() {
@@ -75,5 +78,13 @@ public class UserProfileDto {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Boolean getBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(Boolean banned) {
+        isBanned = banned;
     }
 }

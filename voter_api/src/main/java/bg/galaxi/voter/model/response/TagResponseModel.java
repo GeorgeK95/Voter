@@ -1,6 +1,6 @@
 package bg.galaxi.voter.model.response;
 
-public class TagResponseModel {
+public class TagResponseModel implements Comparable<TagResponseModel> {
 
     private String content;
 
@@ -10,5 +10,10 @@ public class TagResponseModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public int compareTo(TagResponseModel o) {
+        return this.content.compareTo(o.content);
     }
 }

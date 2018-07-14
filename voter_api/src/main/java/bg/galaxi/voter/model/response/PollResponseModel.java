@@ -16,6 +16,7 @@ public class PollResponseModel {
     private Instant creationDateTime;
     private Instant expirationDateTime;
     private Boolean isExpired;
+    private Boolean isDeleted;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long selectedChoice;
@@ -100,6 +101,14 @@ public class PollResponseModel {
 
     public void setTags(List<TagResponseModel> tags) {
         this.tags = tags;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     @Override
