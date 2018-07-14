@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 public class PollResponseModel {
     private Long id;
@@ -90,5 +91,26 @@ public class PollResponseModel {
 
     public void setTotalVotes(Long totalVotes) {
         this.totalVotes = totalVotes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PollResponseModel that = (PollResponseModel) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(question, that.question) &&
+                Objects.equals(choices, that.choices) &&
+                Objects.equals(createdBy, that.createdBy) &&
+                Objects.equals(creationDateTime, that.creationDateTime) &&
+                Objects.equals(expirationDateTime, that.expirationDateTime) &&
+                Objects.equals(isExpired, that.isExpired) &&
+                Objects.equals(selectedChoice, that.selectedChoice) &&
+                Objects.equals(totalVotes, that.totalVotes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, question, choices, createdBy, creationDateTime, expirationDateTime, isExpired, selectedChoice, totalVotes);
     }
 }

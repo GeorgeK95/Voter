@@ -1,7 +1,7 @@
 package bg.galaxi.voter.service;
 
+import bg.galaxi.voter.model.entity.Poll;
 import bg.galaxi.voter.model.entity.Tag;
-import bg.galaxi.voter.model.request.TagRequestModel;
 import bg.galaxi.voter.model.response.TagResponseModel;
 import bg.galaxi.voter.repository.TagRepository;
 import bg.galaxi.voter.service.api.ITagService;
@@ -34,12 +34,12 @@ public class TagService implements ITagService {
     }
 
     @Override
-    public Set<String> getAllTagsAsStrings() {
-        return this.tagRepository.getAllTagsAsStrings();
+    public Tag findByName(String text) {
+        return this.tagRepository.findByContent(text);
     }
 
     @Override
-    public Tag findByName(String text) {
-        return this.tagRepository.findByContent(text);
+    public List<Poll> findPollsByTagName(String current) {
+        return this.tagRepository.getTagPolls(current);
     }
 }

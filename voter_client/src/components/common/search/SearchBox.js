@@ -4,11 +4,16 @@ import {getContextTags, getPollsByTags} from "../../../util/Requester";
 import {SPACE} from "../../../util/webConstants";
 
 class SearchBox extends Component {
-    state = {
-        value: '',
-        result: '',
-        dataSource: []
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: '',
+            dataSource: []
+        };
+
+        this.handleSearchProcess = this.handleSearchProcess.bind(this);
+    }
 
     handleSearch = (value) => {
         let wantedTags = value.trim();
@@ -40,13 +45,9 @@ class SearchBox extends Component {
     handleSearchProcess = (e) => {
         let targetTags = this.state.value;
 
-        getPollsByTags(targetTags)
-            .then(res => {
-                console.log(res)
-                // this.setState(result);
-            })
-            .catch(err => {
-            });
+        this.props.onSearchButtonClicked(targetTags);
+
+        this.setState({value: ''});
     };
 
     render() {
@@ -55,6 +56,7 @@ class SearchBox extends Component {
         return (
             <div className="app-menu search-form">
                 <AutoComplete
+                    value={this.state.value}
                     dataSource={dataSource}
                     onSearch={this.handleSearch}
                     onChange={this.handleChange}

@@ -7,13 +7,13 @@ import './Header.css';
 import {Layout, Menu, Dropdown, Icon} from 'antd';
 import {SIGN_OUT} from "../../../util/webConstants";
 import SearchBox from "../search/SearchBox";
-import Signup from "../../user/signup/Signup";
 
 const Header = Layout.Header;
 
 class HeaderComponent extends Component {
     constructor(props) {
         super(props);
+
         this.handleMenuClick = this.handleMenuClick.bind(this);
     }
 
@@ -58,10 +58,12 @@ class HeaderComponent extends Component {
             <Header className="app-header">
                 <div className="container">
                     <div className="app-title">
-                        <Link to="/">Voter</Link>
+                        <img src='https://pbs.twimg.com/profile_images/684471274194649088/6Y_UXIZy_400x400.png'
+                             width='50px' height='50px'/>
+                        {/*<Link to="/">Voter</Link>*/}
                     </div>
 
-                    <SearchBox/>
+                    <SearchBox onSearchButtonClicked={this.props.onSearch}/>
 
                     <Menu
                         className="app-menu"

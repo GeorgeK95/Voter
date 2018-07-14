@@ -6,7 +6,7 @@ import {
     Switch
 } from 'react-router-dom';
 
-import {getCurrentUser} from '../../util/Requester';
+import {getCurrentUser, getPollsByTags} from '../../util/Requester';
 import {
     ACCESS_TOKEN,
     APP_NAME, GLAD_TO_SEE_YOU_AGAIN_MESSAGE,
@@ -38,13 +38,14 @@ class App extends Component {
         this.state = {
             currentUser: null,
             isAuthenticated: false,
+            foundPollsByTags: [],
             isLoading: false
         }
 
         this.handleLogout = this.handleLogout.bind(this);
         this.loadCurrentUser = this.loadCurrentUser.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
-
+        this.handleSearchBase = this.handleSearchBase.bind(this);
 
         notification.config({
             placement: TOP_RIGHT,
@@ -73,6 +74,18 @@ class App extends Component {
 
     componentWillMount() {
         this.loadCurrentUser();
+    }
+
+    handleSearchBase(targetTags) {
+        getPollsByTags(targetTags)
+            .then(res => {
+                this.setState({
+                    foundPollsByTags: res
+                });
+            })
+            .catch(err => {
+            });
+
     }
 
     handleLogout(redirectTo = SLASH_URL, notificationType = SUCCESS, description = SUCCESSFULLY_SIGNED_OUT_MESSAGE) {
@@ -106,20 +119,38 @@ class App extends Component {
             return <LoadingIndicator/>
         }
 
+        let homeRoute =
+            <Route exact path="/"
+                   render={(props) => <PollList
+                       isAuthenticated={this.state.isAuthenticated}
+                       currentUser={this.state.currentUser}
+                       handleLogout={this.handleLogout} {...props} />}>
+            </Route>;
+
+        if (this.state.foundPollsByTags.length > 0) {
+            homeRoute =
+                <Route exact path="/"
+                       render={(props) => <PollList
+                           foundPollsByTags={this.state.foundPollsByTags}
+                           isAuthenticated={this.state.isAuthenticated}
+                           currentUser={this.state.currentUser}
+                           handleLogout={this.handleLogout} {...props} />}>
+                </Route>;
+        }
+
         return (
             <Layout className="app-container">
                 <AppHeader isAuthenticated={this.state.isAuthenticated}
                            currentUser={this.state.currentUser}
-                           onLogout={this.handleLogout}/>
+                           onLogout={this.handleLogout}
+                           onSearch={this.handleSearchBase}/>
 
                 <Content className="app-content">
                     <div className="container">
                         <Switch>
-                            <Route exact path="/"
-                                   render={(props) => <PollList isAuthenticated={this.state.isAuthenticated}
-                                                                currentUser={this.state.currentUser}
-                                                                handleLogout={this.handleLogout} {...props} />}>
-                            </Route>
+
+                            {homeRoute}
+
                             <Route path="/login"
                                    render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>
                             <Route path="/signup" component={Signup}></Route>

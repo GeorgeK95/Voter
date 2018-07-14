@@ -1,5 +1,6 @@
 package bg.galaxi.voter.repository;
 
+import bg.galaxi.voter.model.entity.Poll;
 import bg.galaxi.voter.model.entity.Tag;
 import bg.galaxi.voter.model.request.TagRequestModel;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,8 +17,8 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     @Query("select t from Tag t where t.content like :param%")
     List<Tag> getTagsByName(@Param("param") String param);
 
-    @Query("select t.content from Tag t")
-    Set<String> getAllTagsAsStrings();
-
     Tag findByContent(String text);
+
+    @Query("select t.polls from Tag t where t.content like :current")
+    List<Poll> getTagPolls(@Param("current") String current);
 }

@@ -19,6 +19,7 @@ import bg.galaxi.voter.service.api.IPollService;
 import bg.galaxi.voter.service.api.IUserService;
 import bg.galaxi.voter.service.api.IVoteService;
 import bg.galaxi.voter.util.AppConstants;
+import bg.galaxi.voter.util.DTOConverter;
 import bg.galaxi.voter.util.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -186,6 +187,10 @@ public class PollService implements IPollService {
         Poll poll = pollRepository.findById(pollId).orElseThrow(
                 () -> new ResourceNotFoundException(POLL, ID, pollId));
 
+        return this.pollResponseMiddleware(poll, pollId, currentUser);
+    }
+
+    private PollResponseModel pollResponseMiddleware(Poll poll, Long pollId, UserPrincipal currentUser) {
         List<ChoiceVoteCountDto> votes = this.voteService.countByPollIdGroupByChoiceId(pollId);
 
         Map<Long, Long> choiceVotesMap = votes.stream()
@@ -270,7 +275,22 @@ public class PollService implements IPollService {
     @Override
     public List<PollResponseModel> getPollsByTags(String tags, UserPrincipal currentUser) {
         //TODO: write query
-        return null;
+        String[] tagsBySpace = tags.split(SPACE);
+        Set<PollResponseModel> pollsWithTags = new HashSet<>();
+        Set<Long> pollsWithTagsIds = new HashSet<>();
+
+        for (String current : tagsBySpace) {
+            List<Poll> polls = this.tagService.findPollsByTagName(current);
+
+            for (Poll poll : polls) {
+                PollResponseModel pollResponseModel = this.pollResponseMiddleware(poll, poll.getId(), currentUser);
+                if (pollsWithTagsIds.contains(pollResponseModel.getId())) continue;
+                pollsWithTags.add(pollResponseModel);
+                pollsWithTagsIds.add(pollResponseModel.getId());
+            }
+        }
+
+        return new ArrayList<>(pollsWithTags);
     }
 
     @Override

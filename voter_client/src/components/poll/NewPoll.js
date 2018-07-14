@@ -77,8 +77,6 @@ class NewPoll extends Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        console.log(this.state.value)
-
         let splittedTags = this.state.value.split(SPACE);
 
         const pollData = {

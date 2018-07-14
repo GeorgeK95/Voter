@@ -27,8 +27,6 @@ const request = (options) => {
     const defaults = {headers: headers};
     options = Object.assign({}, defaults, options);
 
-    if (options.url.trim() === TAGS_URL) return;
-
     return fetch(options.url, options)
         .then(response =>
             response.json().then(json => {
