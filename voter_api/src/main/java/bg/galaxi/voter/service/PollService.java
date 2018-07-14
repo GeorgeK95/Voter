@@ -17,6 +17,7 @@ import bg.galaxi.voter.service.api.IUserService;
 import bg.galaxi.voter.service.api.IVoteService;
 import bg.galaxi.voter.util.AppConstants;
 import bg.galaxi.voter.util.CustomModelMapper;
+import bg.galaxi.voter.util.DTOConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,7 @@ public class PollService implements IPollService {
 
         Page<Poll> polls = new PageImpl<>(list);
 
-//        Page<Poll> polls = this.pollRepository.findAll(pageable);
+        Page<Poll> polls1 = this.pollRepository.findAll(pageable);
 
         if (polls.getNumberOfElements() == 0) {
             return new PagedResponseModel<>(Collections.emptyList(), polls.getNumber(),
@@ -81,7 +82,7 @@ public class PollService implements IPollService {
         }
 
         List<Long> pollIds = polls.map(Poll::getId).getContent();
-//        Map<Long, Long> choiceVoteCountMap = getChoiceVoteCountMap(pollIds);
+        Map<Long, Long> choiceVoteCountMap = getChoiceVoteCountMap(pollIds);
         Map<Long, Long> pollUserVoteMap = getPollUserVoteMap(currentUser, pollIds);
         Map<Long, User> creatorMap = getPollCreatorMap(polls.getContent());
 
@@ -108,7 +109,7 @@ public class PollService implements IPollService {
         }
 
         List<Long> pollIds = polls.map(Poll::getId).getContent();
-//        Map<Long, Long> choiceVoteCountMap = getChoiceVoteCountMap(pollIds);
+        Map<Long, Long> choiceVoteCountMap = getChoiceVoteCountMap(pollIds);
         Map<Long, Long> pollUserVoteMap = getPollUserVoteMap(currentUser, pollIds);
 
         List<PollResponseModel> pollResponseModels = polls.map(poll -> CustomModelMapper.mapEntityToResponseModel(poll,
@@ -139,7 +140,7 @@ public class PollService implements IPollService {
         Sort sort = new Sort(Sort.Direction.DESC, CREATED_AT);
         List<Poll> polls = pollRepository.findByIdIn(pollIds, sort);
 
-//        Map<Long, Long> choiceVoteCountMap = getChoiceVoteCountMap(pollIds);
+        Map<Long, Long> choiceVoteCountMap = getChoiceVoteCountMap(pollIds);
         Map<Long, Long> pollUserVoteMap = getPollUserVoteMap(currentUser, pollIds);
         Map<Long, User> creatorMap = getPollCreatorMap(polls);
 
@@ -171,7 +172,6 @@ public class PollService implements IPollService {
 
         poll.setExpirationDateTime(expirationDateTime);
 
-        //TODO: tags already in db to be set to poll and mp
         for (TagRequestModel tagRequestModel : pollRequestModel.getTags()) {
             Tag byName = this.tagService.findByName(tagRequestModel.getText());
 
@@ -272,7 +272,8 @@ public class PollService implements IPollService {
 
     @Override
     public List<PollResponseModel> getPollsByTags(String tags, UserPrincipal currentUser) {
-        //TODO: write query
+        if (tags.isEmpty()) return DTOConverter.convert(this.pollRepository.findAll(), PollResponseModel.class);
+
         String[] tagsBySpace = tags.split(SPACE);
         Set<PollResponseModel> pollsWithTags = new HashSet<>();
         Set<Long> pollsWithTagsIds = new HashSet<>();
@@ -312,15 +313,15 @@ public class PollService implements IPollService {
             throw new BadRequestException(PAGE_SIZE_MUST_NOT_BE_GREATER_THAN_MESSAGE + AppConstants.MAX_PAGE_SIZE);
     }
 
-    /* private Map<Long, Long> getChoiceVoteCountMap(List<Long> pollIds) {
-         List<ChoiceVoteCountDto> votes = this.voteService.countByPollIdInGroupByChoiceId(pollIds);
+    private Map<Long, Long> getChoiceVoteCountMap(List<Long> pollIds) {
+        List<ChoiceVoteCountDto> votes = this.voteService.countByPollIdInGroupByChoiceId(pollIds);
 
-         Map<Long, Long> choiceVotesMap = votes.stream()
-                 .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));
+        Map<Long, Long> choiceVotesMap = votes.stream()
+                .collect(Collectors.toMap(ChoiceVoteCountDto::getChoiceId, ChoiceVoteCountDto::getVoteCount));
 
-         return choiceVotesMap;
-     }
- */
+        return choiceVotesMap;
+    }
+
     private Map<Long, Long> getPollUserVoteMap(UserPrincipal currentUser, List<Long> pollIds) {
         Map<Long, Long> pollUserVoteMap = null;
         if (currentUser != null) {

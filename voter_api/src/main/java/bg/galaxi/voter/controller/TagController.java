@@ -26,7 +26,7 @@ public class TagController {
     }
 
     @GetMapping(TAG_NAME_URL)
-    @PreAuthorize(HAS_ROLE_USER)
+//    @PreAuthorize(HAS_ROLE_USER)
     public List<TagResponseModel> getTagsByName(@PathVariable String content) {
         return this.tagService.getTagsByName(content);
     }

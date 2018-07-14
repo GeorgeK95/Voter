@@ -29,7 +29,6 @@ public class Poll extends UserDateAudit {
     @Size(max = QUESTION_MAX_VALUE)
     private String question;
 
-
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = POLL_TAG,
             joinColumns = @JoinColumn(name = POLL_ID),

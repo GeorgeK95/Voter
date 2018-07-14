@@ -46,6 +46,11 @@ class HeaderComponent extends Component {
             ];
         } else {
             menuItems = [
+                <Menu.Item key="/">
+                    <Link to="/">
+                        <Icon type="home" className="nav-icon"/>
+                    </Link>
+                </Menu.Item>,
                 <Menu.Item key="/login">
                     <Link to="/login">Login</Link>
                 </Menu.Item>,

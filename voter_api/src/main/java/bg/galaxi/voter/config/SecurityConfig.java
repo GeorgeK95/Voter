@@ -42,12 +42,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/**/*.js"
     };
 
+    private final CustomUserDetailsService customUserDetailsService;
+
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -92,7 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(API_USER_CHECK_USERNAME_AVAILABILITY_URL, API_USER_CHECK_EMAIL_AVAILABILITY_URL)
                 .permitAll()
-                .antMatchers(HttpMethod.GET, API_POLLS_ALL_URL, API_USERS_ALL_URL)
+                .antMatchers(HttpMethod.GET, API_POLLS_ALL_URL, API_USERS_ALL_URL, API_TAGS_URL_ALL_URL, API_POLLS_BY_TAGS_URL)
                 .permitAll()
                 .anyRequest()
                 .authenticated();

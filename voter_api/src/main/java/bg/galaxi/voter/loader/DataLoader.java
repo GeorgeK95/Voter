@@ -35,6 +35,15 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        this.seedUsers();
+        this.seedPolls();
+    }
+
+    private void seedPolls() {
+
+    }
+
+    private void seedUsers() {
         Role roleUser = new Role(RoleName.ROLE_USER);
         this.roleRepository.save(roleUser);
 

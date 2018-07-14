@@ -42,7 +42,7 @@ class SearchBox extends Component {
         this.setState({value});
     };
 
-    handleSearchProcess = (e) => {
+    handleSearchProcess = () => {
         let targetTags = this.state.value;
 
         this.props.onSearchButtonClicked(targetTags);

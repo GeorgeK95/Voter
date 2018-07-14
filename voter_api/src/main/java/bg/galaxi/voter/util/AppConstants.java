@@ -27,6 +27,7 @@ public interface AppConstants {
     String API_POLLS_URL = "/api/polls";
     String API_POLLS_BY_TAGS_URL = "/api/pollsByTags";
     String API_TAGS_URL = "/api/tags";
+    String API_TAGS_URL_ALL_URL = "/api/tags/**";
     String POLL_ID_URL = "/{pollId}";
     String TAG_NAME_URL = "/{content}";
     String DELETE_POLL_BY_ID = "/delete/{pollId}";
