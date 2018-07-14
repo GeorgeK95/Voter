@@ -10,6 +10,7 @@ import java.util.Objects;
 public class PollResponseModel {
     private Long id;
     private String question;
+    private List<TagResponseModel> tags;
     private List<ChoiceResponseModel> choices;
     private UserContentDto createdBy;
     private Instant creationDateTime;
@@ -91,6 +92,14 @@ public class PollResponseModel {
 
     public void setTotalVotes(Long totalVotes) {
         this.totalVotes = totalVotes;
+    }
+
+    public List<TagResponseModel> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<TagResponseModel> tags) {
+        this.tags = tags;
     }
 
     @Override

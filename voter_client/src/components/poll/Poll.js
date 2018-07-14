@@ -6,7 +6,7 @@ import {getAvatarColor} from '../../util/Colors';
 import {formatDateTime} from '../../util/DateFormatter';
 
 import {Radio, Button} from 'antd';
-import {DAYS_LEFT, HOURS_LEFT, LESS_THAN_SECOND_LEFT, MINUTES_LEFT, SECONDS_LEFT} from "../../util/webConstants";
+import {DAYS_LEFT, HOURS_LEFT, LESS_THAN_SECOND_LEFT, MINUTES_LEFT, SECONDS_LEFT, SPACE} from "../../util/webConstants";
 
 const RadioGroup = Radio.Group;
 
@@ -91,7 +91,17 @@ class Poll extends Component {
 
         let deleteSpan;
         if (this.props.deleteEnabled) deleteSpan =
-            <Icon type="delete" spin={true} className='right-aligned' onClick={this.handleDelete}/>;
+            <Icon type="delete" style={{fontSize: 20}} className='right-aligned' onClick={this.handleDelete}/>;
+
+        let tags = '';
+        if (this.props.poll && this.props.poll.tags) {
+            this.props.poll.tags.forEach((t, i) => {
+                if (i === 3) return;
+                tags += t.content + SPACE;
+            })
+        }
+
+        console.log(tags)
 
         return (
             <div className="poll-content">
@@ -139,6 +149,10 @@ class Poll extends Component {
                                 this.getTimeRemaining(this.props.poll)
                         }
                     </span>
+
+                    <span className="separator">•</span>
+
+                    {tags}
 
                     {deleteSpan}
 

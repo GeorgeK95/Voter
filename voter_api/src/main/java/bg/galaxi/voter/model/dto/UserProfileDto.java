@@ -6,17 +6,19 @@ public class UserProfileDto {
     private Long id;
     private String username;
     private String name;
+    private String role;
     private Instant joinedAt;
     private Long pollCount;
     private Long voteCount;
 
-    public UserProfileDto(Long id, String username, String name, Instant joinedAt, Long pollCount, Long voteCount) {
+    public UserProfileDto(Long id, String username, String name, Instant joinedAt, Long pollCount, Long voteCount, String roleName) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.joinedAt = joinedAt;
         this.pollCount = pollCount;
         this.voteCount = voteCount;
+        this.role = roleName;
     }
 
     public Long getId() {
@@ -65,5 +67,13 @@ public class UserProfileDto {
 
     public void setVoteCount(Long voteCount) {
         this.voteCount = voteCount;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

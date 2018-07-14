@@ -54,7 +54,7 @@ class Profile extends Component {
     handleDelete() {
         //TODO: send delete request with user id
 
-        console.log(this.state.user.id)
+        console.log('-----user-----' + this.state.user.id)
     }
 
     componentDidMount() {
@@ -86,12 +86,14 @@ class Profile extends Component {
         };
 
         let deleteUserDiv;
-        //have to take current user, not user on which profile we are
-        if (this.state.user && this.state.user.role === ADMIN)
+
+        if (this.props.currentUser && this.props.currentUser.role === ADMIN &&
+            this.state.user && this.state.user.role !== ADMIN) {
             deleteUserDiv =
                 <div className="delete-user-btn">
                     <Button type="danger" onClick={this.handleDelete}>Delete</Button>
                 </div>
+        }
 
         return (
             <div className="profile">

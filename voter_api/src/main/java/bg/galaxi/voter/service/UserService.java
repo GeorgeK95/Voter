@@ -13,6 +13,7 @@ import bg.galaxi.voter.repository.UserRepository;
 import bg.galaxi.voter.service.api.IRoleService;
 import bg.galaxi.voter.service.api.IUserService;
 import bg.galaxi.voter.service.api.IVoteService;
+import bg.galaxi.voter.util.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,8 @@ import static bg.galaxi.voter.util.AppConstants.USER_REGISTERED_SUCCESSFULLY_MES
 @Transactional
 public class UserService implements IUserService {
 
+    public static final String USER = "user";
+    public static final String ADMIN = "admin";
     private final UserRepository userRepository;
 
     private final IRoleService roleService;
@@ -107,12 +110,13 @@ public class UserService implements IUserService {
     @Override
     public UserProfileDto getUserProfile(String username) {
         User user = this.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(USER, USERNAME, username));
+                .orElseThrow(() -> new ResourceNotFoundException(AppConstants.USER, USERNAME, username));
 
         long pollCount = this.pollRepository.countByCreatedBy(user.getId());
         long voteCount = this.voteService.countByUserId(user.getId());
 
-        return new UserProfileDto(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount);
+        return new UserProfileDto(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount,
+                user.getRoles().size() > 1 ? ADMIN : USER);
     }
 
     @Override

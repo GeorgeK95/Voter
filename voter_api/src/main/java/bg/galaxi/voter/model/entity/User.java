@@ -52,8 +52,10 @@ public class User extends DateAudit {
             inverseJoinColumns = @JoinColumn(name = ROLE_ID))
     private Set<Role> roles = new HashSet<>();
 
-    public User() {
+    private Boolean isBanned;
 
+    public User() {
+        this.isBanned = false;
     }
 
     public User(String name, String username, String email, String password) {
@@ -109,5 +111,13 @@ public class User extends DateAudit {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Boolean getBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(Boolean banned) {
+        isBanned = banned;
     }
 }

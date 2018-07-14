@@ -16,7 +16,7 @@ public final class DTOConverter {
     }
 
     public static <S, D> List<D> convert(Iterable<S> sourceCollection, Class<D> destinationClass) {
-        ModelMapper mapper = new ModelMapper();
+        CustomModelMapper mapper = new CustomModelMapper();
         List<D> resultList = new ArrayList<>();
 
         for (S sourceObj : sourceCollection) {
@@ -28,7 +28,7 @@ public final class DTOConverter {
     }
 
     public static <S, D> Set<D> convertToSet(Iterable<S> sourceCollection, Class<D> destinationClass) {
-        ModelMapper mapper = new ModelMapper();
+        CustomModelMapper mapper = new CustomModelMapper();
         Set<D> resultSet = new HashSet<>();
 
         for (S sourceObj : sourceCollection) {
