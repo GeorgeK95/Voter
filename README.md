@@ -1,7 +1,8 @@
 # Voter
 ReactJs fundamentals course project.
 
-Voter is simple voting spa and "infinity scroll" app where users can register and create polls with min 2 and up to 6 options to vote.
+Voter is simple voting spa and "infinity scroll" app where users can register and create voters with min 2 and up to 6 options to vote.
+Each voter has expiration date and when expires, the voter will be disabled and only result will be shown.
 Only logged users can create poll and vote for one.
 Logged users also have profile page, where all created by user polls and all votes by user polls are listed.
 Voter has admin functionality: the admin can remove polls if they contain uncensored content and also can ban users.
