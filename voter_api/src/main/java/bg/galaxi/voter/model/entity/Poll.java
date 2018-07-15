@@ -46,8 +46,18 @@ public class Poll extends UserDateAudit {
     @BatchSize(size = CHOISES_BATCH_SIZE)
     private List<Choice> choices = new ArrayList<>();
 
-    @OneToMany(mappedBy = "poll", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "poll" /*,cascade = CascadeType.REMOVE*/)
     private List<Vote> votes = new ArrayList<>();
+
+    public Poll() {
+    }
+
+    public Poll(@NotBlank @Size(max = QUESTION_MAX_VALUE) String question, Set<Tag> tags, @Size(min = CHOISES_MIN_VALUE, max = CHOISES_MAX_VALUE) List<Choice> choices, @NotNull Instant expirationDateTime) {
+        this.question = question;
+        this.tags = tags;
+        this.choices = choices;
+        this.expirationDateTime = expirationDateTime;
+    }
 
     @NotNull
     private Instant expirationDateTime;

@@ -3,7 +3,6 @@ package bg.galaxi.voter.service;
 import bg.galaxi.voter.exception.InternalServerErrorException;
 import bg.galaxi.voter.exception.ResourceNotFoundException;
 import bg.galaxi.voter.model.dto.UserProfileDto;
-import bg.galaxi.voter.model.entity.Poll;
 import bg.galaxi.voter.model.entity.Role;
 import bg.galaxi.voter.model.entity.User;
 import bg.galaxi.voter.model.enumeration.RoleName;

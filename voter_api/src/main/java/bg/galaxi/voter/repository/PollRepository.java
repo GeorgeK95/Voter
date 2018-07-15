@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface PollRepository extends JpaRepository<Poll, Long> {
 
     //AndDeletedFalse
-    Optional<Poll> findById(Long pollId);
+//    Optional<Poll> findByIdAnd(Long pollId);
 
     Page<Poll> findByCreatedBy(Long userId, Pageable pageable);
 

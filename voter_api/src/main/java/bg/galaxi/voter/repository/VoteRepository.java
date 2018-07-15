@@ -1,6 +1,7 @@
 package bg.galaxi.voter.repository;
 
 import bg.galaxi.voter.model.dto.ChoiceVoteCountDto;
+import bg.galaxi.voter.model.entity.Poll;
 import bg.galaxi.voter.model.entity.Vote;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,5 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
 
     @Query("SELECT v.poll.id FROM Vote v WHERE v.user.id = :userId")
     Page<Long> findVotedPollIdsByUserId(@Param("userId") Long userId, Pageable pageable);
-
 }
 

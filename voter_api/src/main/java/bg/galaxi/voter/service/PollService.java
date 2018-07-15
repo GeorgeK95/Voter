@@ -11,13 +11,13 @@ import bg.galaxi.voter.model.request.PollRequestModel;
 import bg.galaxi.voter.model.response.PollResponseModel;
 import bg.galaxi.voter.model.request.VoteRequestModel;
 import bg.galaxi.voter.repository.PollRepository;
+import bg.galaxi.voter.repository.VoteRepository;
 import bg.galaxi.voter.security.user.UserPrincipal;
 import bg.galaxi.voter.service.api.IPollService;
 import bg.galaxi.voter.service.api.IUserService;
 import bg.galaxi.voter.service.api.IVoteService;
 import bg.galaxi.voter.util.AppConstants;
 import bg.galaxi.voter.util.CustomModelMapper;
-import bg.galaxi.voter.util.DTOConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,8 @@ public class PollService implements IPollService {
 
     private final PollRepository pollRepository;
 
+    private final VoteRepository voteRepository;
+
     private final IUserService userService;
 
     private final IVoteService voteService;
@@ -54,12 +56,13 @@ public class PollService implements IPollService {
 //    private final ILoggerService loggerService;
 
     @Autowired
-    public PollService(PollRepository pollRepository, IVoteService voteService, IUserService userService, TagService tagService/*, ILoggerService loggerService*/) {
+    public PollService(PollRepository pollRepository, IVoteService voteService, IUserService userService, TagService tagService,/*, ILoggerService loggerService*/VoteRepository voteRepository) {
         this.pollRepository = pollRepository;
         this.voteService = voteService;
         this.userService = userService;
         this.tagService = tagService;
 //        this.loggerService = loggerService;
+        this.voteRepository = voteRepository;
     }
 
     public PagedResponseModel<PollResponseModel> getAllPolls(UserPrincipal currentUser, int page, int size) {
@@ -164,10 +167,6 @@ public class PollService implements IPollService {
 
         pollRequestModel.setTags(pollRequestModel.getTags().stream()
                 .filter(t -> !t.getText().isEmpty()).collect(Collectors.toList()));
-
-        /*pollRequestModel.getTags().stream()
-                .filter(tag -> !tag.getText().isEmpty())
-                .forEach(tag -> poll.addTag(new Tag(tag.getText())));*/
 
         Instant now = Instant.now();
         Instant expirationDateTime = now.plus(Duration.ofDays(pollRequestModel.getPollLength().getDays()))
@@ -275,21 +274,31 @@ public class PollService implements IPollService {
 
     @Override
     public List<PollResponseModel> getPollsByTags(String tags, UserPrincipal currentUser) {
-        if (tags.isEmpty()) return DTOConverter.convert(this.pollRepository.findAll(), PollResponseModel.class);
-
         String[] tagsBySpace = tags.split(SPACE);
         Set<PollResponseModel> pollsWithTags = new HashSet<>();
         Set<Long> pollsWithTagsIds = new HashSet<>();
 
+        if (tags.isEmpty()) {
+            List<Poll> allPollsNotDeleted = this.pollRepository.findAll()
+                    .stream().filter(p -> !p.getDeleted()).collect(Collectors.toList());
+            return this.formatPoll(allPollsNotDeleted, pollsWithTagsIds, pollsWithTags, currentUser);
+        }
+
         for (String current : tagsBySpace) {
             List<Poll> polls = this.tagService.findPollsByTagName(current);
 
-            for (Poll poll : polls) {
-                PollResponseModel pollResponseModel = this.pollResponseMiddleware(poll, poll.getId(), currentUser);
-                if (pollsWithTagsIds.contains(pollResponseModel.getId())) continue;
-                pollsWithTags.add(pollResponseModel);
-                pollsWithTagsIds.add(pollResponseModel.getId());
-            }
+            pollsWithTags.addAll(this.formatPoll(polls, pollsWithTagsIds, pollsWithTags, currentUser));
+        }
+
+        return new ArrayList<>(pollsWithTags);
+    }
+
+    private List<PollResponseModel> formatPoll(List<Poll> polls, Set<Long> pollsWithTagsIds, Set<PollResponseModel> pollsWithTags, UserPrincipal currentUser) {
+        for (Poll poll : polls) {
+            PollResponseModel pollResponseModel = this.pollResponseMiddleware(poll, poll.getId(), currentUser);
+            if (pollsWithTagsIds.contains(pollResponseModel.getId())) continue;
+            pollsWithTags.add(pollResponseModel);
+            pollsWithTagsIds.add(pollResponseModel.getId());
         }
 
         return new ArrayList<>(pollsWithTags);
@@ -298,15 +307,21 @@ public class PollService implements IPollService {
     @Override
     public boolean deletePoll(Long pollId, UserPrincipal currentUser) {
         /*Optional<Poll> isFound = this.pollRepository.findById(pollId);
-
         if (isFound.isPresent()) {
             Poll poll = isFound.get();
             poll.setDeleted(true);
-
             this.pollRepository.save(poll);
         }*/
 
-        Poll poll = this.pollRepository.findById(pollId).get();
+        Optional<Poll> optional = this.pollRepository.findById(pollId);
+        if (!optional.isPresent()) return false;
+
+        Poll poll = optional.get();
+
+        for (Vote vote : poll.getVotes()) {
+            this.voteRepository.delete(vote);
+        }
+        this.pollRepository.saveAndFlush(poll);
 
         this.pollRepository.deleteById(pollId);
 

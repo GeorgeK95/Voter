@@ -22,8 +22,6 @@ public class CustomModelMapper {
         pollResponseModel.setExpirationDateTime(poll.getExpirationDateTime());
         pollResponseModel.setExpired(poll.getExpirationDateTime().isBefore(Instant.now()));
 
-//        pollResponseModel.setChoices(DTOConverter.convert(poll.getChoices(), ChoiceResponseModel.class));
-
         List<ChoiceResponseModel> choiceResponses = poll.getChoices().stream().map(choice -> {
             ChoiceResponseModel choiceResponse = new ChoiceResponseModel();
             choiceResponse.setId(choice.getId());
