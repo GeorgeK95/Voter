@@ -58,8 +58,8 @@ public interface AppConstants {
     String HAS_ANY_ROLE_AUTH = "hasAnyRole('USER', 'ADMIN')";
 
     //    JWT
-    String $_APP_JWT_SECRET = "${app.jwtSecret}";
-    String $_APP_JWT_EXPIRATION_IN_MS = "${app.jwtExpirationInMs}";
+    String APP_JWT_SECRET = "${app.jwtSecret}";
+    String APP_JWT_EXPIRATION_IN_MS = "${app.jwtExpirationInMs}";
     String INVALID_JWT_SIGNATURE = "Invalid JWT signature";
     String INVALID_JWT_TOKEN = "Invalid JWT token";
     String EXPIRED_JWT_TOKEN = "Expired JWT token";
